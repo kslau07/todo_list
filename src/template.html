@@ -7,10 +7,17 @@
   </head>
   <body>
     <h1>TodoList</h1>
-    <h3>List of Projects</h3>
+    <h3>All Projects</h3>
     <ul class="projects"></ul>
-    <label for="projectName">Project Name</label>
+    <label for="projectName">New Project Name</label>
     <input type="text" id="projectName" name="projectName" />
-    <button>Save</button>
+    <button class="button-create-project">Create new project</button>
+
+    <div class="backdrop"></div>
+    <button class="open-modal">Create task</button>
+    <div class="popup-modal">
+      <p>form goes here</p>
+      <button class="close-modal">Cancel</button>
+    </div>
   </body>
 </html>
