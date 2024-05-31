@@ -14,8 +14,13 @@
     <button class="button-create-project">Create new project</button>
 
     <div class="backdrop"></div>
-    <button class="button-open-modal">Create task</button>
+    <button class="button-open-modal">Add todo</button>
     <div class="modal">
+      <h2>Add Todo</h2>
+      <div>
+        <label for="modal__todo-label">Title</label>
+        <input name="modal__todo-input" type="text" id="modal__todo-input" />
+      </div>
       <div>
         <label for="modal__projects-label">Project: </label>
         <select
@@ -23,17 +28,39 @@
           name="modal__projects-select"
         ></select>
       </div>
-      <div>
-        <label for="modal__todo-label">Todo</label>
-        <input
-          name="modal__todo-input"
-          type="text"
-          value=""
-          id="modal__todo-input"
-        />
-      </div>
       <button class="button-add-todo">Add Todo</button>
       <button class="button-close-modal">Cancel</button>
+    </div>
+
+    <div
+      class="delete-me"
+      style="
+        margin: 2em;
+        padding: 2em;
+        border: 3px solid red;
+        width: fit-content;
+      "
+    >
+      <h2>Delete Me</h2>
+      <h3>Delete my javascript too</h3>
+      <button
+        class="button-log-projects"
+        style="display: block; margin-bottom: 1em"
+      >
+        log projects
+      </button>
+      <button
+        class="button-save-projects"
+        style="display: block; margin-bottom: 1em"
+      >
+        save projects
+      </button>
+      <button
+        class="button-load-projects"
+        style="display: block; margin-bottom: 1em"
+      >
+        load projects
+      </button>
     </div>
   </body>
 </html>
