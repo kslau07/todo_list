@@ -1,29 +1,49 @@
-import { projects } from "./index.js";
+import { projects, findProject } from "./index.js";
 
-const openModal = document.querySelector(".open-modal");
-const closeModal = document.querySelector(".close-modal");
+const buttonOpenModal = document.querySelector(".button-open-modal");
+const buttonCloseModal = document.querySelector(".button-close-modal");
 
-openModal.addEventListener("click", () => {
-  const popupModal = document.querySelector(".popup-modal");
+buttonOpenModal.addEventListener("click", () => {
+  const modal = document.querySelector(".modal");
   const backdrop = document.querySelector(".backdrop");
-  popupModal.classList.add("show");
+  modal.classList.add("show");
   backdrop.classList.add("show");
 });
 
-closeModal.addEventListener("click", () => {
-  const popupModal = document.querySelector(".popup-modal");
+const closeModal = function () {
+  const modal = document.querySelector(".modal");
   const backdrop = document.querySelector(".backdrop");
-  popupModal.classList.remove("show");
+  modal.classList.remove("show");
   backdrop.classList.remove("show");
-});
+};
 
-const selectProject = document.getElementById("select-project");
-projects.forEach((project) => {
-  const option = document.createElement("option");
-  option.value = project.projectName;
-  option.textContent = project.projectName;
-  selectProject.appendChild(option);
-});
+buttonCloseModal.addEventListener("click", closeModal);
 
-const addTask = document.querySelector(".add-task");
-addTask.addEventListener("click", () => console.log("here"));
+export const updateDropdown = function () {
+  const dropdown = document.getElementById("modal__projects-select");
+  dropdown.innerHTML = "";
+  projects.forEach((project) => {
+    const option = document.createElement("option");
+    option.value = project.projectName;
+    option.textContent = project.projectName;
+    dropdown.appendChild(option);
+  });
+};
+
+const buttonAddtodo = document.querySelector(".button-add-todo");
+buttonAddtodo.addEventListener("click", () => {
+  const projectsDropdown = document.getElementById("modal__projects-select");
+  const selectedProjectName =
+    projectsDropdown.options[projectsDropdown.selectedIndex].value;
+  const todoInput = document.getElementById("modal__todo-input");
+
+  const selectedProject = findProject(selectedProjectName);
+  const newTodo = new Map();
+  newTodo.set("project", selectedProjectName);
+  newTodo.set("todo", todoInput.value);
+  selectedProject.todos.push(newTodo);
+
+  console.log(selectedProject);
+  todoInput.value = "";
+  closeModal();
+});

@@ -4,7 +4,7 @@
   inset: 0; /*Needed???*/
   opacity: 0;
 }
-.popup-modal {
+.modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -18,7 +18,7 @@
     transform 175ms ease-out,
     opacity 200ms ease;
 }
-.popup-modal.show {
+.modal.show {
   opacity: 1;
   pointer-events: all;
   transform: translate(-50%, -50%);

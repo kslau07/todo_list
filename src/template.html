@@ -14,16 +14,26 @@
     <button class="button-create-project">Create new project</button>
 
     <div class="backdrop"></div>
-    <button class="open-modal">Create task</button>
-    <div class="popup-modal">
-      <label for="select-project">Project: </label>
-      <select id="select-project" name="select-project"></select>
-      <div class="new-task__container">
-        <label for="new-task">Task</label>
-        <input name="new-task" type="text" value="" id="new-task__input" />
+    <button class="button-open-modal">Create task</button>
+    <div class="modal">
+      <div>
+        <label for="modal__projects-label">Project: </label>
+        <select
+          id="modal__projects-select"
+          name="modal__projects-select"
+        ></select>
       </div>
-      <button class="add-task">Add Task</button>
-      <button class="close-modal">Cancel</button>
+      <div>
+        <label for="modal__todo-label">Todo</label>
+        <input
+          name="modal__todo-input"
+          type="text"
+          value=""
+          id="modal__todo-input"
+        />
+      </div>
+      <button class="button-add-todo">Add Todo</button>
+      <button class="button-close-modal">Cancel</button>
     </div>
   </body>
 </html>

@@ -1,8 +1,13 @@
 import "./global.css";
 import "./style.css";
 import { storageAvailable } from "./storageAvailable";
+import { updateDropdown } from "./modal";
 
 export const projects = [];
+
+export const findProject = (projName) => {
+  return projects.find((project) => project.projectName === projName);
+};
 
 const hasStorage = (type) => (storageAvailable(type) ? true : false);
 
@@ -13,8 +18,10 @@ const saveProjects = function () {
 };
 
 const createProject = function (projectName) {
+  const todos = [];
   return {
     projectName,
+    todos,
   };
 };
 
@@ -56,6 +63,7 @@ const populateProjects = function () {
 
 function refreshUI() {
   populateProjects();
+  updateDropdown();
 }
 
 if (!hasStorage("localStorage")) alert("Warning: Unable to save locally.");
