@@ -16,7 +16,13 @@
     <div class="backdrop"></div>
     <button class="open-modal">Create task</button>
     <div class="popup-modal">
-      <p>form goes here</p>
+      <label for="select-project">Project: </label>
+      <select id="select-project" name="select-project"></select>
+      <div class="new-task__container">
+        <label for="new-task">Task</label>
+        <input name="new-task" type="text" value="" id="new-task__input" />
+      </div>
+      <button class="add-task">Add Task</button>
       <button class="close-modal">Cancel</button>
     </div>
   </body>

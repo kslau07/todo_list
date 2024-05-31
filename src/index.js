@@ -1,7 +1,8 @@
+import "./global.css";
 import "./style.css";
 import { storageAvailable } from "./storageAvailable";
 
-const projects = [];
+export const projects = [];
 
 const hasStorage = (type) => (storageAvailable(type) ? true : false);
 
@@ -60,22 +61,3 @@ function refreshUI() {
 if (!hasStorage("localStorage")) alert("Warning: Unable to save locally.");
 loadProjects();
 refreshUI();
-
-/*extract to own file*/
-
-const openModal = document.querySelector(".open-modal");
-const closeModal = document.querySelector(".close-modal");
-
-openModal.addEventListener("click", () => {
-  const popupModal = document.querySelector(".popup-modal");
-  const backdrop = document.querySelector(".backdrop");
-  popupModal.classList.add("show");
-  backdrop.classList.add("show");
-});
-
-closeModal.addEventListener("click", () => {
-  const popupModal = document.querySelector(".popup-modal");
-  const backdrop = document.querySelector(".backdrop");
-  popupModal.classList.remove("show");
-  backdrop.classList.remove("show");
-});

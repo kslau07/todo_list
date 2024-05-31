@@ -1,0 +1,4 @@
+/* CSS reset and global properties go here */
+.border-red {
+  border: 3px solid #f00;
+}
