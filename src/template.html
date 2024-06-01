@@ -9,27 +9,55 @@
     <h1>TodoList</h1>
     <h3>All Projects</h3>
     <ul class="projects"></ul>
-    <label for="projectName">New Project Name</label>
-    <input type="text" id="projectName" name="projectName" />
-    <button class="button-create-project">Create new project</button>
+
+    <!-- Delete me later  -->
+    <!-- <label -->
+    <!--   >New Project Name -->
+    <!--   <input type="text" class="project-name-input" /> -->
+    <!-- </label> -->
+    <!-- <button class="button-create-project">Create new project</button> -->
 
     <div class="backdrop"></div>
     <button class="button-open-modal">Add todo</button>
     <div class="modal">
       <h2>Add Todo</h2>
       <div>
-        <label for="modal__todo-label">Title</label>
-        <input name="modal__todo-input" type="text" id="modal__todo-input" />
+        <label
+          >Title:
+          <input class="modal__todo-input" />
+        </label>
       </div>
       <div>
-        <label for="modal__projects-label">Project: </label>
-        <select
-          id="modal__projects-select"
-          name="modal__projects-select"
-        ></select>
+        <label
+          >Project:
+          <select
+            class="modal__projects-select"
+            name="modal__projects-select"
+          ></select>
+        </label>
       </div>
-      <button class="button-add-todo">Add Todo</button>
-      <button class="button-close-modal">Cancel</button>
+
+      <div class="modal__create-project-container">
+        <label class="modal__create-project-label"
+          >New Project Name:
+          <input type="text" class="modal__create-project-input" />
+        </label>
+      </div>
+
+      <div class="modal__due-date">
+        <label
+          >Due Date
+          <input type="date" />
+        </label>
+      </div>
+
+      <div>
+        <button class="button-close-modal" style="background-color: red">
+          Delete (later)
+        </button>
+        <button class="button-add-todo">Add Todo</button>
+        <button class="button-close-modal">Cancel</button>
+      </div>
     </div>
 
     <div

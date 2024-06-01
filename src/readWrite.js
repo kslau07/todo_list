@@ -39,14 +39,14 @@ const replacer = function (key, value) {
   }
 };
 
-const reviver = function (key, value) {
+function reviver(key, value) {
   if (typeof value === "object" && value !== null) {
     if (value.dataType === "Map") {
       return new Map(value.value);
     }
   }
   return value;
-};
+}
 
 export const saveProjects = function (projects) {
   if (!hasStorage("localStorage")) return;
@@ -56,7 +56,8 @@ export const saveProjects = function (projects) {
 
 export const loadProjects = function (projects) {
   if (localStorage.getItem("projects")) {
-    const savedProjects = JSON.parse(localStorage.getItem("projects", reviver));
+    const projectsDataStr = localStorage.getItem("projects");
+    const savedProjects = JSON.parse(projectsDataStr, reviver);
     savedProjects.forEach((savedProject) => projects.push(savedProject));
   }
 };

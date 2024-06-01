@@ -5,6 +5,11 @@
   opacity: 0;
 }
 .modal {
+  display: grid;
+  gap: 1em;
+
+  width: fit-content;
+
   position: fixed;
   top: 50%;
   left: 50%;
@@ -18,6 +23,11 @@
     transform 175ms ease-out,
     opacity 200ms ease;
 }
+
+.modal > * {
+  /* border: 2px solid lightgray; */
+}
+
 .modal.show {
   opacity: 1;
   pointer-events: all;
@@ -25,4 +35,13 @@
 }
 .backdrop.show {
   opacity: 0.3;
+}
+
+.modal__create-project-label {
+  display: none;
+  /* height: 0; */
+}
+
+option[data-action="create-project"] {
+  font-weight: 900;
 }

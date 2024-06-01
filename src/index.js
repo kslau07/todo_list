@@ -11,30 +11,43 @@ const initializeProjectsWithDefault = function () {
   projects.push(defaultProject);
 };
 
+export const createProject = function (projectName) {
+  const newProject = { projectName, todos: [] };
+  return newProject;
+};
+
 export const findProject = (projName) => {
   return projects.find((project) => project.projectName === projName);
 };
 
-const createProject = function (projectName) {
-  const todos = [];
-  return {
-    projectName,
-    todos,
-  };
+export const createTodo = function (title, projectName) {
+  const newTodo = new Map();
+  newTodo.set("title", title);
+  newTodo.set("project", projectName);
+
+  return newTodo;
 };
 
-const buttonCreateProject = document.querySelector(".button-create-project");
-buttonCreateProject.addEventListener("click", () => {
-  const projectNameInput = document.querySelector("input");
-  const newProjectName = projectNameInput.value;
-  const newProjectObject = createProject(newProjectName);
-  projects.push(newProjectObject);
-  saveProjects(projects);
-  refreshUI();
-  projectNameInput.value = "";
-});
+/*delete me*/
+// const buttonCreateProject = document.querySelector(".button-create-project");
+// buttonCreateProject.addEventListener("click", () => {
+//   const projectNameInput = document.querySelector("input");
+//   const newProjectName = projectNameInput.value;
+//   const newProjectObject = createProject(newProjectName);
+//   projects.push(newProjectObject);
+//   saveProjects(projects);
+//   refreshUI();
+//   projectNameInput.value = "";
+// });
 
-const populateTodos = function () {};
+const populateTodos = function (project, liElement) {
+  project.todos.forEach((todo) => {
+    const todoTitle = todo.get("title");
+    const div = document.createElement("div");
+    div.textContent = todoTitle;
+    liElement.appendChild(div);
+  });
+};
 
 const populateProjects = function () {
   const projectsUl = document.querySelector(".projects");
@@ -44,6 +57,8 @@ const populateProjects = function () {
     const li = document.createElement("li");
     li.textContent = project.projectName;
     projectsUl.appendChild(li);
+
+    populateTodos(project, li);
   });
 };
 
