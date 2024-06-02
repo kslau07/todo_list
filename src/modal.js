@@ -41,6 +41,10 @@ const editNewTodo = function () {
   const input = document.querySelector(".modal__todo-input");
   input.value = "";
   const dropdown = document.querySelector(".modal__projects-select");
+  // const projIndex = projects.findIndex(
+  //   (project) => project.id === Number(projectId),
+  // );
+  // dropdown.selectedIndex = projIndex;
   dropdown.disabled = false;
   const hiddenInput = document.querySelector(".modal__hidden-input");
   hiddenInput.value = "";
@@ -118,10 +122,15 @@ const findOrCreateProject = function (option) {
 };
 
 const resetForm = function () {
-  const todoTitle = document.querySelector(".modal__todo-input");
-  todoTitle.value = "";
-  const dueDate = document.querySelector(".modal__date-input");
-  dueDate.value = "";
+  document.querySelector(".modal__todo-input").value = "";
+  document.querySelector(".modal__date-input").value = "";
+  document.querySelector(".modal__create-project-input").value = "";
+
+  // Reset dropdown/create new
+  const dropdown = document.querySelector(".modal__projects-select");
+  const projIndex = projects.findIndex((project) => project.id > 0);
+  dropdown.selectedIndex = projIndex;
+  document.querySelector(".modal__create-project-label").style.display = "none";
 };
 
 const buttonAddtodo = document.querySelector(".button-submit");
