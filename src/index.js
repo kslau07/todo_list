@@ -12,42 +12,45 @@ const initializeProjectsWithDefault = function () {
 };
 
 export const createProject = function (projectName) {
-  const newProject = { projectName, todos: [] };
+  const id = projects.length + 1;
+  const newProject = { id, projectName, todos: [] };
   return newProject;
 };
 
-export const findProjectByName = (projName) => {
-  return projects.find((project) => project.projectName === projName);
+export const findProjectById = (id) => {
+  return projects.find((project) => project.id === Number(id));
 };
 
 const incrementTodoId = function (project) {
-  return project.todos.length + 1;
+  if (project.todos.length === 0) return 1;
+
+  const lastTodo = project.todos[project.todos.length - 1];
+  return lastTodo.get("id") + 1;
 };
 
-export const createTodo = function (title, projectName, dueDate) {
+export const createTodo = function (title, projectId, dueDate) {
   const newTodo = new Map();
-  const project = findProjectByName(projectName);
+  const project = findProjectById(projectId);
   newTodo.set("id", incrementTodoId(project));
   newTodo.set("title", title);
-  newTodo.set("project", projectName);
+  newTodo.set("projectId", projectId);
   newTodo.set("dueDate", dueDate);
   return newTodo;
 };
 
-export const findTodo = function (project, todoTitle) {
-  return project.todos.find((todo) => todo.get("title") === todoTitle);
+export const findTodoById = function (projectId, todoId) {
+  const project = findProjectById(projectId);
+  return project.todos.find((todo) => todo.get("id") === Number(todoId));
 };
 
 const populateTodos = function (project, liElement) {
   project.todos.forEach((todo) => {
     const todoTitle = todo.get("title");
     const div = document.createElement("div");
-    div.dataset.project = todo.get("project");
+    div.dataset.projectId = todo.get("projectId");
+    div.dataset.todoId = todo.get("id");
     div.textContent = todoTitle;
-    // div.textContent = todoTitle + " // due date: " + todo.get("dueDate");
-
     div.addEventListener("click", openModal);
-
     liElement.appendChild(div);
   });
 };

@@ -1,8 +1,8 @@
 import {
   projects,
   createProject,
-  findProjectByName,
-  findTodo,
+  findProjectById,
+  findTodoById,
   createTodo,
 } from "./index.js";
 import { saveProjects, loadProjects } from "./readWrite";
@@ -10,26 +10,29 @@ import { getDropdownSelection } from "./utilities";
 
 const buttonOpenModal = document.querySelector(".button-open-modal");
 
-const editExistingTodo = function (projectName, todoTitle) {
-  const project = findProjectByName(projectName);
-  const todo = findTodo(project, todoTitle);
+const editExistingTodo = function (projectId, todoId) {
+  const project = findProjectById(projectId);
+  const todo = findTodoById(projectId, todoId);
   const modalTitle = document.querySelector(".modal__title");
   modalTitle.textContent = "Update Todo";
   const inputTitle = document.querySelector(".modal__todo-input");
   inputTitle.value = todo.get("title");
   const dropdown = document.querySelector(".modal__projects-select");
   const projIndex = projects.findIndex(
-    (project) => project.projectName === projectName,
+    (project) => project.id === Number(projectId),
   );
   dropdown.selectedIndex = projIndex;
   dropdown.disabled = true;
 
   const dateInput = document.querySelector(".modal__date-input");
   dateInput.value = todo.get("dueDate");
-  console.log(todo.get("dueDate"));
+
+  const buttonSubmit = document.querySelector(".button-submit");
+  buttonSubmit.innerText = "Update";
 
   const hiddenInput = document.querySelector(".modal__hidden-input");
-  hiddenInput.value = todo.get("todoId");
+  hiddenInput.dataset.projectId = findProjectById(projectId).id;
+  hiddenInput.dataset.todoId = todo.get("id");
 };
 
 const editNewTodo = function () {
@@ -49,8 +52,8 @@ export const openModal = function () {
   modal.classList.add("show");
   backdrop.classList.add("show");
 
-  if (this.dataset.project) {
-    editExistingTodo(this.dataset.project, this.textContent);
+  if (this.dataset.projectId) {
+    editExistingTodo(this.dataset.projectId, this.dataset.todoId);
   } else {
     editNewTodo();
   }
@@ -75,6 +78,7 @@ export const updateDropdown = function () {
     const option = document.createElement("option");
     option.textContent = project.projectName;
     option.dataset.action = "find-project";
+    option.dataset.projectId = project.id;
     dropdown.appendChild(option);
   });
 
@@ -108,8 +112,8 @@ const findOrCreateProject = function (option) {
     projects.push(newProject);
     return newProject;
   } else if (action === "find-project") {
-    const projectName = option.value;
-    return findProjectByName(projectName);
+    const projectId = option.dataset.projectId;
+    return findProjectById(projectId);
   }
 };
 
@@ -120,24 +124,21 @@ const resetForm = function () {
   dueDate.value = "";
 };
 
-const buttonAddtodo = document.querySelector(".button-add-todo");
+const buttonAddtodo = document.querySelector(".button-submit");
 const addTodo = function () {
   const projectsDropdown = document.querySelector(".modal__projects-select");
   const selectedOption = getDropdownSelection(projectsDropdown);
   const targetProject = findOrCreateProject(selectedOption);
-
   const todoTitle = document.querySelector(".modal__todo-input");
-  const projectName = targetProject.projectName;
   const dueDate = document.querySelector(".modal__date-input").value;
-  const newTodo = createTodo(todoTitle.value, projectName, dueDate);
+
+  const newTodo = createTodo(todoTitle.value, targetProject.id, dueDate);
   targetProject.todos.push(newTodo);
   resetForm();
   closeModal();
   saveProjects(projects);
 };
 buttonAddtodo.addEventListener("click", addTodo);
-
-// dateInput.addEventListener("click", () => console.log(dateInput.value));
 
 // NOTE: Delete me
 document
