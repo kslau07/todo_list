@@ -1,3 +1,5 @@
+import { refreshUI } from "./index";
+
 function storageAvailable(type) {
   let storage;
   try {
@@ -52,12 +54,14 @@ export const saveProjects = function (projects) {
   if (!hasStorage("localStorage")) return;
 
   localStorage.setItem("projects", JSON.stringify(projects, replacer));
+  refreshUI();
 };
 
 export const loadProjects = function (projects) {
-  if (localStorage.getItem("projects")) {
-    const projectsDataStr = localStorage.getItem("projects");
-    const savedProjects = JSON.parse(projectsDataStr, reviver);
-    savedProjects.forEach((savedProject) => projects.push(savedProject));
-  }
+  if (!localStorage.getItem("projects")) return;
+
+  const projectsDataStr = localStorage.getItem("projects");
+  const savedProjects = JSON.parse(projectsDataStr, reviver);
+  savedProjects.forEach((savedProject) => projects.push(savedProject));
+  refreshUI();
 };

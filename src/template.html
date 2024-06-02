@@ -20,7 +20,7 @@
     <div class="backdrop"></div>
     <button class="button-open-modal">Add todo</button>
     <div class="modal">
-      <h2>Add Todo</h2>
+      <h2 class="modal__title">Add Todo</h2>
       <div>
         <label
           >Title:
@@ -44,20 +44,21 @@
         </label>
       </div>
 
-      <div class="modal__due-date">
+      <div class="modal__date">
         <label
           >Due Date
-          <input type="date" />
+          <input type="date" class="modal__date-input" />
         </label>
       </div>
 
       <div>
-        <button class="button-close-modal" style="background-color: red">
+        <button class="button-delete-todo" style="background-color: red">
           Delete (later)
         </button>
         <button class="button-add-todo">Add Todo</button>
         <button class="button-close-modal">Cancel</button>
       </div>
+      <input type="hidden" class="modal__hidden-input" />
     </div>
 
     <div

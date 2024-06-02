@@ -5,6 +5,7 @@
   opacity: 0;
 }
 .modal {
+  background-color: var(--color-white);
   display: grid;
   gap: 1em;
 
