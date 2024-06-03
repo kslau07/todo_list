@@ -11,7 +11,9 @@ import { getDropdownSelection } from "./utilities";
 const buttonOpenModal = document.querySelector(".button-open-modal");
 
 const resetForm = function () {
-  document.querySelector(".modal__title").textContent = "Add Todo";
+  const inputRequired = document.querySelector(".modal__create-project-input");
+  inputRequired.required = false;
+
   document.querySelector(".modal__todo-input").value = "";
   document.querySelector(".modal__date-input").value = "";
   document.querySelector(".modal__create-project-input").value = "";
@@ -25,7 +27,8 @@ const resetForm = function () {
   const dropdown = document.querySelector(".modal__projects-select");
   const projIndex = projects.findIndex((project) => project.id > 0);
   dropdown.selectedIndex = projIndex;
-  document.querySelector(".modal__create-project-label").style.display = "none";
+  document.querySelector(".modal__create-project-container").style.display =
+    "none";
   dropdown.disabled = false;
 };
 
@@ -45,9 +48,6 @@ const editExistingTodo = function (projectId, todoId) {
 
   const dateInput = document.querySelector(".modal__date-input");
   dateInput.value = todo.get("dueDate");
-
-  const buttonSubmit = document.querySelector(".button-submit");
-  buttonSubmit.innerText = "Update";
 
   const hiddenInput = document.querySelector(".modal__hidden-input");
   hiddenInput.dataset.action = "update";
@@ -98,11 +98,17 @@ export const updateDropdown = function () {
 
 const displayCreateProjectField = () => {
   const selection = getDropdownSelection(dropdown);
-  const el = document.querySelector(".modal__create-project-label");
+  const createProjectContainer = document.querySelector(
+    ".modal__create-project-container",
+  );
+  const inputRequired = document.querySelector(".modal__create-project-input");
+
   if (selection.dataset.action === "create-project") {
-    el.style.display = "initial";
+    createProjectContainer.style.display = "initial";
+    inputRequired.required = true;
   } else {
-    el.style.display = "none";
+    createProjectContainer.style.display = "none";
+    inputRequired.required = false;
   }
 };
 
@@ -125,27 +131,41 @@ const findOrCreateProject = function (option) {
   }
 };
 
-const buttonAddtodo = document.querySelector(".button-submit");
-const submitTodo = function () {
+const isInputValid = function (inputElem) {
+  const condition1 = inputElem.required && inputElem.value !== "";
+  const condition2 = inputElem.required === false;
+
+  // return condition1 ? true : condition2 ? true : false;
+  return condition1 || condition2 ? true : false;
+};
+
+const buttonAddtodo = document.querySelector(".button-save-todo");
+const saveTodo = function () {
   const projectsDropdown = document.querySelector(".modal__projects-select");
   const selectedOption = getDropdownSelection(projectsDropdown);
-  const targetProject = findOrCreateProject(selectedOption);
   const todoTitle = document.querySelector(".modal__todo-input").value;
   const dueDate = document.querySelector(".modal__date-input").value;
   const action = document.querySelector(".modal__hidden-input").dataset.action;
   const projectId = document.querySelector(".modal__hidden-input").dataset
     .projectId;
   const todoId = document.querySelector(".modal__hidden-input").dataset.todoId;
-  createOrUpdateTodo(
-    { action, projectId, todoId },
-    todoTitle,
-    targetProject,
-    dueDate,
+  const createProjectInput = document.querySelector(
+    ".modal__create-project-input",
   );
-  closeModal();
-  saveProjects(projects);
+
+  if (!todoTitle == "" && isInputValid(createProjectInput)) {
+    const targetProject = findOrCreateProject(selectedOption);
+    createOrUpdateTodo(
+      { action, projectId, todoId },
+      todoTitle,
+      targetProject,
+      dueDate,
+    );
+    closeModal();
+    saveProjects(projects);
+  }
 };
-buttonAddtodo.addEventListener("click", submitTodo);
+buttonAddtodo.addEventListener("click", saveTodo);
 
 // NOTE: Delete me
 document

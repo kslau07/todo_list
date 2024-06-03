@@ -38,7 +38,7 @@
   opacity: 0.3;
 }
 
-.modal__create-project-label {
+.modal__create-project-container {
   display: none;
   /* height: 0; */
 }

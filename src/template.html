@@ -11,50 +11,59 @@
     <ul class="projects"></ul>
     <div class="backdrop"></div>
     <button class="button-open-modal">Add todo</button>
+
     <div class="modal">
-      <h2 class="modal__title">Add Todo</h2>
-      <div>
-        <label
-          >Title:
-          <input class="modal__todo-input" required />
-        </label>
-      </div>
-      <div>
-        <label
-          >Project:
+      <form onsubmit="return false;">
+        <h2 class="modal__title">Add Todo</h2>
+        <p>
+          Required fields are followed by <span aria-label="required">*</span>.
+        </p>
+        <p>
+          <label for="title">Title: <span aria-label="required">*</span></label>
+          <input
+            id="title"
+            type="text"
+            name="title"
+            class="modal__todo-input"
+            required
+          />
+        </p>
+
+        <p>
+          <label for="project"
+            >Project: <span aria-label="required">*</span></label
+          >
           <select
             class="modal__projects-select"
             name="modal__projects-select"
           ></select>
-        </label>
-      </div>
+        </p>
 
-      <div class="modal__create-project-container">
-        <label class="modal__create-project-label"
-          >New Project Name:
+        <p class="modal__create-project-container">
+          <label for="modal__create-project-label"
+            >New Project Name: <span aria-label="required">*</span></label
+          >
           <input type="text" class="modal__create-project-input" />
-        </label>
-      </div>
+        </p>
 
-      <div class="modal__date">
-        <label
-          >Due Date
+        <p class="modal__date">
+          <label>Due Date (optional): </label>
           <input type="date" class="modal__date-input" />
-        </label>
-      </div>
+        </p>
 
-      <div>
-        <button class="button-submit" type="button">Add Todo</button>
-        <button class="button-close-modal">Cancel</button>
-      </div>
+        <input
+          type="hidden"
+          class="modal__hidden-input"
+          data-action="create"
+          data-project-id=""
+          data-todo-id=""
+        />
 
-      <input
-        type="hidden"
-        class="modal__hidden-input"
-        data-action="create"
-        data-project-id=""
-        data-todo-id=""
-      />
+        <p>
+          <input type="submit" value="Save" class="button-save-todo" />
+          <button class="button-close-modal" type="button">Cancel</button>
+        </p>
+      </form>
     </div>
 
     <div
