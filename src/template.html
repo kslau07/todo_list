@@ -16,7 +16,7 @@
       <div>
         <label
           >Title:
-          <input class="modal__todo-input" />
+          <input class="modal__todo-input" required />
         </label>
       </div>
       <div>
@@ -44,13 +44,17 @@
       </div>
 
       <div>
-        <button class="button-delete-todo" style="background-color: red">
-          Delete (later)
-        </button>
         <button class="button-submit" type="button">Add Todo</button>
         <button class="button-close-modal">Cancel</button>
       </div>
-      <input type="hidden" class="modal__hidden-input" />
+
+      <input
+        type="hidden"
+        class="modal__hidden-input"
+        data-action="create"
+        data-project-id=""
+        data-todo-id=""
+      />
     </div>
 
     <div

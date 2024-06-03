@@ -28,19 +28,27 @@ const incrementTodoId = function (project) {
   return lastTodo.get("id") + 1;
 };
 
-export const createTodo = function (title, projectId, dueDate) {
-  const newTodo = new Map();
-  const project = findProjectById(projectId);
-  newTodo.set("id", incrementTodoId(project));
-  newTodo.set("title", title);
-  newTodo.set("projectId", projectId);
-  newTodo.set("dueDate", dueDate);
-  return newTodo;
-};
-
 export const findTodoById = function (projectId, todoId) {
   const project = findProjectById(projectId);
   return project.todos.find((todo) => todo.get("id") === Number(todoId));
+};
+
+export const createOrUpdateTodo = function (data, title, project, dueDate) {
+  let targetTodo;
+
+  if (data.action === "create") {
+    targetTodo = new Map();
+    targetTodo.set("id", incrementTodoId(project));
+  } else if (data.action === "update") {
+    targetTodo = findTodoById(data.projectId, data.todoId);
+  }
+
+  targetTodo.set("title", title);
+  targetTodo.set("projectId", project.id);
+  targetTodo.set("dueDate", dueDate);
+
+  if (data.action === "create") project.todos.push(targetTodo);
+  return targetTodo;
 };
 
 const populateTodos = function (project, liElement) {

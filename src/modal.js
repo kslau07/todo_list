@@ -3,12 +3,31 @@ import {
   createProject,
   findProjectById,
   findTodoById,
-  createTodo,
+  createOrUpdateTodo,
 } from "./index.js";
 import { saveProjects, loadProjects } from "./readWrite";
 import { getDropdownSelection } from "./utilities";
 
 const buttonOpenModal = document.querySelector(".button-open-modal");
+
+const resetForm = function () {
+  document.querySelector(".modal__title").textContent = "Add Todo";
+  document.querySelector(".modal__todo-input").value = "";
+  document.querySelector(".modal__date-input").value = "";
+  document.querySelector(".modal__create-project-input").value = "";
+
+  const hiddenInput = document.querySelector(".modal__hidden-input");
+  hiddenInput.dataset.action = "create";
+  hiddenInput.dataset.projectId = "";
+  hiddenInput.dataset.todoId = "";
+
+  // Reset dropdown/create new
+  const dropdown = document.querySelector(".modal__projects-select");
+  const projIndex = projects.findIndex((project) => project.id > 0);
+  dropdown.selectedIndex = projIndex;
+  document.querySelector(".modal__create-project-label").style.display = "none";
+  dropdown.disabled = false;
+};
 
 const editExistingTodo = function (projectId, todoId) {
   const project = findProjectById(projectId);
@@ -31,23 +50,9 @@ const editExistingTodo = function (projectId, todoId) {
   buttonSubmit.innerText = "Update";
 
   const hiddenInput = document.querySelector(".modal__hidden-input");
+  hiddenInput.dataset.action = "update";
   hiddenInput.dataset.projectId = findProjectById(projectId).id;
   hiddenInput.dataset.todoId = todo.get("id");
-};
-
-const editNewTodo = function () {
-  const modalTitle = document.querySelector(".modal__title");
-  modalTitle.textContent = "Add Todo";
-  const input = document.querySelector(".modal__todo-input");
-  input.value = "";
-  const dropdown = document.querySelector(".modal__projects-select");
-  // const projIndex = projects.findIndex(
-  //   (project) => project.id === Number(projectId),
-  // );
-  // dropdown.selectedIndex = projIndex;
-  dropdown.disabled = false;
-  const hiddenInput = document.querySelector(".modal__hidden-input");
-  hiddenInput.value = "";
 };
 
 export const openModal = function () {
@@ -58,8 +63,6 @@ export const openModal = function () {
 
   if (this.dataset.projectId) {
     editExistingTodo(this.dataset.projectId, this.dataset.todoId);
-  } else {
-    editNewTodo();
   }
 };
 buttonOpenModal.addEventListener("click", openModal);
@@ -70,7 +73,8 @@ const closeModal = function () {
   const backdrop = document.querySelector(".backdrop");
   modal.classList.remove("show");
   backdrop.classList.remove("show");
-  resetForm();
+
+  setTimeout(resetForm, 300);
 };
 buttonCloseModal.addEventListener("click", closeModal);
 
@@ -121,33 +125,27 @@ const findOrCreateProject = function (option) {
   }
 };
 
-const resetForm = function () {
-  document.querySelector(".modal__todo-input").value = "";
-  document.querySelector(".modal__date-input").value = "";
-  document.querySelector(".modal__create-project-input").value = "";
-
-  // Reset dropdown/create new
-  const dropdown = document.querySelector(".modal__projects-select");
-  const projIndex = projects.findIndex((project) => project.id > 0);
-  dropdown.selectedIndex = projIndex;
-  document.querySelector(".modal__create-project-label").style.display = "none";
-};
-
 const buttonAddtodo = document.querySelector(".button-submit");
-const addTodo = function () {
+const submitTodo = function () {
   const projectsDropdown = document.querySelector(".modal__projects-select");
   const selectedOption = getDropdownSelection(projectsDropdown);
   const targetProject = findOrCreateProject(selectedOption);
-  const todoTitle = document.querySelector(".modal__todo-input");
+  const todoTitle = document.querySelector(".modal__todo-input").value;
   const dueDate = document.querySelector(".modal__date-input").value;
-
-  const newTodo = createTodo(todoTitle.value, targetProject.id, dueDate);
-  targetProject.todos.push(newTodo);
-  resetForm();
+  const action = document.querySelector(".modal__hidden-input").dataset.action;
+  const projectId = document.querySelector(".modal__hidden-input").dataset
+    .projectId;
+  const todoId = document.querySelector(".modal__hidden-input").dataset.todoId;
+  createOrUpdateTodo(
+    { action, projectId, todoId },
+    todoTitle,
+    targetProject,
+    dueDate,
+  );
   closeModal();
   saveProjects(projects);
 };
-buttonAddtodo.addEventListener("click", addTodo);
+buttonAddtodo.addEventListener("click", submitTodo);
 
 // NOTE: Delete me
 document
