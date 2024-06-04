@@ -15,17 +15,25 @@
     <div class="modal">
       <form onsubmit="return false;">
         <h2 class="modal__title">Add Todo</h2>
-        <p>
-          Required fields are followed by <span aria-label="required">*</span>.
-        </p>
+
         <p>
           <label for="title">Title: <span aria-label="required">*</span></label>
           <input
             id="title"
             type="text"
             name="title"
-            class="modal__todo-input"
+            class="modal__title-input"
             required
+          />
+        </p>
+
+        <p>
+          <label for="description">Description: </label>
+          <input
+            id="description"
+            type="text"
+            name="description"
+            class="modal__description-input"
           />
         </p>
 
@@ -47,8 +55,21 @@
         </p>
 
         <p class="modal__date">
-          <label>Due Date (optional): </label>
+          <label>Due Date: </label>
           <input type="date" class="modal__date-input" />
+        </p>
+
+        <p>
+          <label for="priority">Priority: </label>
+          <select id="priority" name="priority" class="modal__priority-select">
+            <option value="high">High</option>
+            <option value="medium" selected>Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </p>
+
+        <p>
+          Required fields are followed by <span aria-label="required">*</span>.
         </p>
 
         <input
