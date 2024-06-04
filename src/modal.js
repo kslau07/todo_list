@@ -11,8 +11,7 @@ import {
 const buttonOpenModal = document.querySelector(".button-open-modal");
 
 const resetForm = function () {
-  const inputRequired = document.querySelector(".modal__create-project-input");
-  inputRequired.required = false;
+  document.querySelector(".modal__title").textContent = "Add Todo";
   document.querySelector(".modal__title-input").value = "";
   document.querySelector(".modal__description-input").value = "";
   document.querySelector(".modal__date-input").value = "";
@@ -23,6 +22,9 @@ const resetForm = function () {
   hiddenInput.dataset.action = "create";
   hiddenInput.dataset.projectId = "";
   hiddenInput.dataset.todoId = "";
+
+  const inputRequired = document.querySelector(".modal__create-project-input");
+  inputRequired.required = false;
 
   // Reset dropdown/create new
   const dropdown = document.querySelector(".modal__projects-select");
@@ -157,19 +159,6 @@ const saveTodo = function () {
 };
 buttonAddtodo.addEventListener("click", saveTodo);
 
-// NOTE: Delete me
-document
-  .querySelector(".button-log-projects")
-  .addEventListener("click", () => console.log(projects));
-
-document
-  .querySelector(".button-save-projects")
-  .addEventListener("click", saveProjects);
-
-document
-  .querySelector(".button-load-projects")
-  .addEventListener("click", loadProjects);
-
 const editExistingTodo = function (projectId, todoId) {
   const project = findProject("id", projectId);
   const todo = findTodo("id", todoId, projectId);
@@ -199,3 +188,46 @@ const editExistingTodo = function (projectId, todoId) {
   hiddenInput.dataset.projectId = findProject("id", projectId).id;
   hiddenInput.dataset.todoId = todo.get("id");
 };
+
+// NOTE: Delete me
+// For dev only
+// document
+//   .querySelector(".button-log-projects")
+//   .addEventListener("click", () => console.log(projects));
+// document
+//   .querySelector(".button-save-projects")
+//   .addEventListener("click", saveProjects);
+// document
+//   .querySelector(".button-load-projects")
+//   .addEventListener("click", loadProjects);
+
+// <div
+//   class="delete-me"
+//   style="
+//     margin: 2em;
+//     padding: 2em;
+//     border: 3px solid red;
+//     width: fit-content;
+//   "
+// >
+//   <h2>Delete Me</h2>
+//   <h3>Delete my javascript too</h3>
+//   <button
+//     class="button-log-projects"
+//     style="display: block; margin-bottom: 1em"
+//   >
+//     log projects
+//   </button>
+//   <button
+//     class="button-save-projects"
+//     style="display: block; margin-bottom: 1em"
+//   >
+//     save projects
+//   </button>
+//   <button
+//     class="button-load-projects"
+//     style="display: block; margin-bottom: 1em"
+//   >
+//     load projects
+//   </button>
+// </div>
