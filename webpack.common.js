@@ -2,7 +2,12 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: ["./src/index.js", "./src/modal.js", "./src/utilities.js"],
+  entry: [
+    "./src/index.js",
+    "./src/modal.js",
+    "./src/nav.js",
+    "./src/utilities.js",
+  ],
   plugins: [
     new HtmlWebpackPlugin({
       title: "Todo List App",

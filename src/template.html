@@ -4,87 +4,124 @@
     <title>Todo List App</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>TodoList</h1>
-    <h3>All Projects</h3>
-    <ul class="projects"></ul>
-    <div class="backdrop"></div>
-    <button class="button-open-modal">Add todo</button>
+    <header>
+      <div class="container">
+        <button class="nav-toggle">
+          <span class="hamburger"></span>
+        </button>
 
-    <div class="modal">
-      <form onsubmit="return false;">
-        <h2 class="modal__title">Add Todo</h2>
+        <a href="#" class="logo">
+          <span class="logo-word-todo">todo</span
+          ><span class="logo-word-list">list</span></a
+        >
 
-        <p>
-          <label for="title">Title: <span aria-label="required">*</span></label>
-          <input
-            id="title"
-            type="text"
-            name="title"
-            class="modal__title-input"
-            required
-          />
-        </p>
+        <nav class="nav">
+          <h2>View</h2>
+          <ul>
+            <li>Today</li>
+            <li>All</li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <h3>Today:</h3>
+        <ul class="projects"></ul>
+        <div class="backdrop"></div>
+        <button class="button-open-modal">Add todo</button>
 
-        <p>
-          <label for="description">Description: </label>
-          <input
-            id="description"
-            type="text"
-            name="description"
-            class="modal__description-input"
-          />
-        </p>
+        <div class="modal">
+          <form onsubmit="return false;">
+            <h2 class="modal__title">Add Todo</h2>
 
-        <p>
-          <label for="project"
-            >Project: <span aria-label="required">*</span></label
-          >
-          <select
-            class="modal__projects-select"
-            name="modal__projects-select"
-          ></select>
-        </p>
+            <p>
+              <label for="title"
+                >Title: <span aria-label="required">*</span></label
+              >
+              <input
+                id="title"
+                type="text"
+                name="title"
+                class="modal__title-input"
+                required
+              />
+            </p>
 
-        <p class="modal__create-project-container">
-          <label for="modal__create-project-label"
-            >New Project Name: <span aria-label="required">*</span></label
-          >
-          <input type="text" class="modal__create-project-input" />
-        </p>
+            <p>
+              <label for="description">Description: </label>
+              <input
+                id="description"
+                type="text"
+                name="description"
+                class="modal__description-input"
+              />
+            </p>
 
-        <p class="modal__date">
-          <label>Due Date: </label>
-          <input type="date" class="modal__date-input" />
-        </p>
+            <p>
+              <label for="project"
+                >Project: <span aria-label="required">*</span></label
+              >
+              <select
+                class="modal__projects-select"
+                name="modal__projects-select"
+              ></select>
+            </p>
 
-        <p>
-          <label for="priority">Priority: </label>
-          <select id="priority" name="priority" class="modal__priority-select">
-            <option value="high">High</option>
-            <option value="medium" selected>Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </p>
+            <p class="modal__create-project-container">
+              <label for="modal__create-project-label"
+                >New Project Name: <span aria-label="required">*</span></label
+              >
+              <input type="text" class="modal__create-project-input" />
+            </p>
 
-        <p>
-          Required fields are followed by <span aria-label="required">*</span>.
-        </p>
+            <p class="modal__date">
+              <label>Due Date: </label>
+              <input type="date" class="modal__date-input" />
+            </p>
 
-        <input
-          type="hidden"
-          class="modal__hidden-input"
-          data-action="create"
-          data-project-id=""
-          data-todo-id=""
-        />
+            <p>
+              <label for="priority">Priority: </label>
+              <select
+                id="priority"
+                name="priority"
+                class="modal__priority-select"
+              >
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </p>
 
-        <p>
-          <input type="submit" value="Save" class="button-save-todo" />
-          <button class="button-close-modal" type="button">Cancel</button>
-        </p>
-      </form>
-    </div>
+            <p>
+              Required fields are followed by
+              <span aria-label="required">*</span>.
+            </p>
+
+            <input
+              type="hidden"
+              class="modal__hidden-input"
+              data-action="create"
+              data-project-id=""
+              data-todo-id=""
+            />
+
+            <p>
+              <input type="submit" value="Save" class="button-save-todo" />
+              <button class="button-close-modal" type="button">Cancel</button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer></footer>
   </body>
 </html>
