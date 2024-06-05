@@ -23,7 +23,8 @@
   --space-xxxxl: 4rem;
 
   /* Colors */
-  --color-white: #fafafa;
+  --color-white: white;
+  --color-eggshell: #fafafa;
   --color-lightgray: #e5e5e5;
   --color-gray: #a3a3a3;
   --color-darkgray: #525252;

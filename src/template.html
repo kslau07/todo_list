@@ -24,17 +24,28 @@
         >
 
         <nav class="nav">
-          <h2>View</h2>
-          <ul>
-            <li>Today</li>
+          <div class="nav__close-button-container">
+            <button class="nav__close-button"></button>
+          </div>
+          <h3 class="nav__title">View:</h3>
+          <ul class="nav__list">
             <li>All</li>
+            <li>Today's</li>
+            <li>Upcoming</li>
           </ul>
+          <h3 class="nav__title">By project:</h3>
+          <ul class="nav__list">
+            <li>default</li>
+            <li>another project</li>
+            <li>delete these</li>
+          </ul>
+          <p>Settings</p>
         </nav>
       </div>
     </header>
     <main>
       <div class="container">
-        <h3>Today:</h3>
+        <h3>View: All</h3>
         <ul class="projects"></ul>
         <div class="backdrop"></div>
         <button class="button-open-modal">Add todo</button>
