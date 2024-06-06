@@ -3,11 +3,11 @@ import "./style.css";
 import { saveLocalData, loadLocalData, hasStorage } from "./readWrite";
 import { openModal, updateDropdown } from "./modal";
 import { createProject } from "./utilities";
-import { filteredTodos } from "./filters";
+import { todosFilteredByView } from "./filters";
 
 export const localData = {
   projects: [],
-  settings: {
+  config: {
     projectCounter: 0,
     todoCounter: 0,
     lastView: "today",
@@ -20,7 +20,7 @@ const initializeWithDefaultProject = function () {
 };
 
 const populateTodos = function () {
-  filteredTodos();
+  todosFilteredByView();
 
   const todosUl = document.querySelector(".main__todos");
   todosUl.innerHTML = "";
@@ -48,6 +48,6 @@ export const refreshUI = function () {
 };
 
 if (!hasStorage("localStorage")) alert("Warning: Unable to save locally.");
-if (localData.settings.projectCounter === 0) initializeWithDefaultProject();
+if (localData.config.projectCounter === 0) initializeWithDefaultProject();
 loadLocalData(localData);
 refreshUI();

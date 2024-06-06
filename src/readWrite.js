@@ -45,8 +45,13 @@ function reviver(key, value) {
   if (typeof value === "object" && value !== null) {
     if (value.dataType === "Map") {
       return new Map(value.value);
+    } else if (value[0] === "dueDate" && value[1] !== "") {
+      // Restore Date object from date string
+      value[1] = new Date(value[1]);
+      return value;
     }
   }
+
   return value;
 }
 
@@ -64,6 +69,8 @@ export const loadLocalData = function () {
   const loadedLocalData = JSON.parse(localDataStr, reviver);
   localData.projects = loadedLocalData.projects;
   localData.config = loadedLocalData.config;
+
+  // console.log(typeof localData.projects[0].todos[1].get("dueDate")); //delete me
 };
 
 // delete me

@@ -19,8 +19,7 @@ export const findProject = (key, value) => {
 const nextId = function (dataType) {
   const counterType = dataType === "project" ? "projectCounter" : "todoCounter";
 
-  return (localData.settings[counterType] =
-    localData.settings[counterType] + 1);
+  return (localData.config[counterType] = localData.config[counterType] + 1);
 };
 
 export const findTodo = function (key, value, projectId) {
@@ -47,7 +46,12 @@ export const createOrUpdateTodo = function (dataAttrs, fieldData) {
   }
 
   for (const key in fieldData) {
-    const value = fieldData[key];
+    let value;
+    if (key === "dueDate" && fieldData[key]) {
+      value = new Date(fieldData[key]);
+    } else {
+      value = fieldData[key];
+    }
     targetTodo.set(key, value);
   }
 
