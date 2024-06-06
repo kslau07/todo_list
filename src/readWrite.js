@@ -63,7 +63,7 @@ export const loadLocalData = function () {
   const localDataStr = localStorage.getItem("localData");
   const loadedLocalData = JSON.parse(localDataStr, reviver);
   localData.projects = loadedLocalData.projects;
-  localData.settings = loadedLocalData.settings;
+  localData.config = loadedLocalData.config;
 };
 
 // delete me
