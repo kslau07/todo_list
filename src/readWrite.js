@@ -1,4 +1,4 @@
-import { refreshUI } from "./index";
+import { refreshUI, localData } from "./index";
 
 function storageAvailable(type) {
   let storage;
@@ -50,18 +50,25 @@ function reviver(key, value) {
   return value;
 }
 
-export const saveProjects = function (projects) {
+export const saveLocalData = function () {
   if (!hasStorage("localStorage")) return;
 
-  localStorage.setItem("projects", JSON.stringify(projects, replacer));
+  localStorage.setItem("localData", JSON.stringify(localData, replacer));
   refreshUI();
 };
 
-export const loadProjects = function (projects) {
-  if (!localStorage.getItem("projects")) return;
+export const loadLocalData = function () {
+  if (!localStorage.getItem("localData")) return;
 
-  const projectsDataStr = localStorage.getItem("projects");
-  const savedProjects = JSON.parse(projectsDataStr, reviver);
-  savedProjects.forEach((savedProject) => projects.push(savedProject));
-  refreshUI();
+  const localDataStr = localStorage.getItem("localData");
+  const loadedLocalData = JSON.parse(localDataStr, reviver);
+  localData.projects = loadedLocalData.projects;
+  localData.settings = loadedLocalData.settings;
+};
+
+// delete me
+export const printLocalStorage = function () {
+  console.log("from printLocalStorage()");
+  const localDataStr = localStorage.getItem("localData");
+  console.log(localDataStr);
 };

@@ -1,5 +1,5 @@
-import { projects } from "./index";
-import { saveProjects, loadProjects } from "./readWrite";
+import { localData } from "./index";
+import { saveLocalData, localLocalData, printLocalStorage } from "./readWrite";
 import {
   getDropdownSelection,
   createProject,
@@ -28,7 +28,9 @@ const resetForm = function () {
 
   // Reset dropdown/create new
   const dropdown = document.querySelector(".modal__projects-select");
-  const projIndex = projects.findIndex((project) => project.id > 0);
+
+  const projIndex = 0;
+
   dropdown.selectedIndex = projIndex;
   document.querySelector(".modal__create-project-container").style.display =
     "none";
@@ -62,7 +64,7 @@ export const updateDropdown = function () {
   const dropdown = document.querySelector(".modal__projects-select");
   dropdown.innerHTML = "";
 
-  projects.forEach((project) => {
+  localData.projects.forEach((project) => {
     const option = document.createElement("option");
     option.textContent = project.name;
     option.dataset.action = "find-project";
@@ -95,22 +97,15 @@ const displayCreateProjectField = () => {
 const dropdown = document.querySelector(".modal__projects-select");
 dropdown.addEventListener("click", displayCreateProjectField);
 
-// Check if "create-project" was selected
-// const createProject = function (name) {
-//   const newProject = createProject(name);
-//   projects.push(newProject);
-//   return newProject;
-// };
-
 const isInputValid = function (inputElem) {
   const condition1 = inputElem.required && inputElem.value !== "";
   const condition2 = inputElem.required === false;
 
-  // return condition1 ? true : condition2 ? true : false;
   return condition1 || condition2 ? true : false;
 };
 
 const buttonAddtodo = document.querySelector(".button-save-todo");
+
 const saveTodo = function () {
   const projectsDropdown = document.querySelector(".modal__projects-select");
   const selectedProject = getDropdownSelection(projectsDropdown);
@@ -137,7 +132,6 @@ const saveTodo = function () {
       selectedProject.dataset.action === "create-project"
         ? createProject(createProjectInput.value)
         : findProject("id", selectedProject.dataset.projectId);
-
     const todoDataAttrs = {
       action: dataAction,
       projectId: dataProjectId,
@@ -151,10 +145,10 @@ const saveTodo = function () {
       dueDate: dueDate,
       priority: selectedPriority.value,
     };
-
     createOrUpdateTodo(todoDataAttrs, todoFieldData);
+
     closeModal();
-    saveProjects(projects);
+    saveLocalData();
   }
 };
 buttonAddtodo.addEventListener("click", saveTodo);
@@ -169,7 +163,7 @@ const editExistingTodo = function (projectId, todoId) {
   const inputDescription = document.querySelector(".modal__description-input");
   inputDescription.value = todo.get("description");
   const dropdownProjects = document.querySelector(".modal__projects-select");
-  const projIndex = projects.findIndex(
+  const projIndex = localData.projects.findIndex(
     (project) => project.id === Number(projectId),
   );
   dropdownProjects.selectedIndex = projIndex;
@@ -191,43 +185,12 @@ const editExistingTodo = function (projectId, todoId) {
 
 // NOTE: Delete me
 // For dev only
-// document
-//   .querySelector(".button-log-projects")
-//   .addEventListener("click", () => console.log(projects));
-// document
-//   .querySelector(".button-save-projects")
-//   .addEventListener("click", saveProjects);
-// document
-//   .querySelector(".button-load-projects")
-//   .addEventListener("click", loadProjects);
-
-// <div
-//   class="delete-me"
-//   style="
-//     margin: 2em;
-//     padding: 2em;
-//     border: 3px solid red;
-//     width: fit-content;
-//   "
-// >
-//   <h2>Delete Me</h2>
-//   <h3>Delete my javascript too</h3>
-//   <button
-//     class="button-log-projects"
-//     style="display: block; margin-bottom: 1em"
-//   >
-//     log projects
-//   </button>
-//   <button
-//     class="button-save-projects"
-//     style="display: block; margin-bottom: 1em"
-//   >
-//     save projects
-//   </button>
-//   <button
-//     class="button-load-projects"
-//     style="display: block; margin-bottom: 1em"
-//   >
-//     load projects
-//   </button>
-// </div>
+document
+  .querySelector(".button-log-localData")
+  .addEventListener("click", () => console.log(localData));
+document
+  .querySelector(".button-log-projects")
+  .addEventListener("click", () => console.log(localData.projects));
+document
+  .querySelector(".button-print-localstorage")
+  .addEventListener("click", printLocalStorage);

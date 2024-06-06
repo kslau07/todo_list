@@ -1,26 +1,26 @@
-import { projects } from "./index";
+import { localData } from "./index";
 export const getDropdownSelection = function (dropdownElement) {
   return dropdownElement.options[dropdownElement.selectedIndex];
 };
 
 export const createProject = function (name) {
   const dataType = "project";
-  const id = projects.length + 1;
+  const id = nextId("project");
   const todos = [];
   const newProject = { dataType, id, name, todos };
-  projects.push(newProject);
+  localData.projects.push(newProject);
   return newProject;
 };
 
 export const findProject = (key, value) => {
-  return projects.find((project) => project[key] == value);
+  return localData.projects.find((project) => project[key] == value);
 };
 
-const incrementTodoId = function (project) {
-  if (project.todos.length === 0) return 1;
+const nextId = function (dataType) {
+  const counterType = dataType === "project" ? "projectCounter" : "todoCounter";
 
-  const lastTodo = project.todos[project.todos.length - 1];
-  return lastTodo.get("id") + 1;
+  return (localData.settings[counterType] =
+    localData.settings[counterType] + 1);
 };
 
 export const findTodo = function (key, value, projectId) {
@@ -31,7 +31,7 @@ export const findTodo = function (key, value, projectId) {
 const createTodo = function (project) {
   const newTodo = new Map();
   newTodo.set("dataType", "todo");
-  newTodo.set("id", incrementTodoId(project));
+  newTodo.set("id", nextId("todo"));
   project.todos.push(newTodo);
   return newTodo;
 };

@@ -1,46 +1,53 @@
 import "./global.css";
 import "./style.css";
-import { saveProjects, loadProjects, hasStorage } from "./readWrite";
+import { saveLocalData, loadLocalData, hasStorage } from "./readWrite";
 import { openModal, updateDropdown } from "./modal";
 import { createProject } from "./utilities";
+import { filteredTodos } from "./filters";
 
-export const projects = [];
+export const localData = {
+  projects: [],
+  settings: {
+    projectCounter: 0,
+    todoCounter: 0,
+    lastView: "today",
+    lastProject: "default",
+  },
+};
 
-const initializeProjectsWithDefault = function () {
+const initializeWithDefaultProject = function () {
   createProject("default");
-  refreshUI();
 };
 
-const populateTodos = function (project, liElement) {
-  project.todos.forEach((todo) => {
-    const todoTitle = todo.get("title");
-    const div = document.createElement("div");
-    div.dataset.projectId = todo.get("projectId");
-    div.dataset.todoId = todo.get("id");
-    div.textContent = todoTitle;
-    div.addEventListener("click", openModal);
-    liElement.appendChild(div);
-  });
-};
+const populateTodos = function () {
+  filteredTodos();
 
-const populateProjects = function () {
-  const projectsUl = document.querySelector(".projects");
-  projectsUl.innerHTML = "";
+  const todosUl = document.querySelector(".main__todos");
+  todosUl.innerHTML = "";
 
-  projects.forEach((project) => {
-    const li = document.createElement("li");
-    li.textContent = project.name;
-    projectsUl.appendChild(li);
-
-    populateTodos(project, li);
+  localData.projects.forEach((project) => {
+    project.todos.forEach((todo) => {
+      const titleDiv = document.createElement("div");
+      titleDiv.classList.add("main__todos-title");
+      titleDiv.textContent = todo.get("title");
+      titleDiv.dataset.projectId = todo.get("projectId");
+      titleDiv.dataset.todoId = todo.get("id");
+      titleDiv.addEventListener("click", openModal);
+      todosUl.appendChild(titleDiv);
+      const dueDateDiv = document.createElement("div");
+      dueDateDiv.classList.add("main__todos-due-date");
+      dueDateDiv.textContent = todo.get("dueDate");
+      todosUl.appendChild(dueDateDiv);
+    });
   });
 };
 
 export const refreshUI = function () {
-  populateProjects();
+  populateTodos();
   updateDropdown();
 };
 
 if (!hasStorage("localStorage")) alert("Warning: Unable to save locally.");
-loadProjects(projects);
-if (projects.length === 0) initializeProjectsWithDefault();
+if (localData.settings.projectCounter === 0) initializeWithDefaultProject();
+loadLocalData(localData);
+refreshUI();
