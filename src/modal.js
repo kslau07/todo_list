@@ -6,6 +6,7 @@ import {
   findProject,
   findTodo,
   createOrUpdateTodo,
+  formatDateYmd,
 } from "./utilities";
 
 const buttonOpenModal = document.querySelector(".button-open-modal");
@@ -114,6 +115,7 @@ const saveTodo = function () {
     ".modal__description-input",
   ).value;
   const dueDate = document.querySelector(".modal__date-input").value;
+
   const priorityDropdown = document.querySelector(".modal__priority-select");
   const selectedPriority = getDropdownSelection(priorityDropdown);
 
@@ -175,7 +177,10 @@ const editExistingTodo = function (projectId, todoId) {
     priority === "high" ? 0 : priority === "medium" ? 1 : 2;
 
   const dateInput = document.querySelector(".modal__date-input");
-  dateInput.value = todo.get("dueDate");
+  const todoDueDate = todo.get("dueDate");
+  if (todoDueDate) {
+    dateInput.value = formatDateYmd(todoDueDate);
+  }
 
   const hiddenInput = document.querySelector(".modal__hidden-input");
   hiddenInput.dataset.action = "update";

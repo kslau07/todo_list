@@ -48,7 +48,12 @@ export const createOrUpdateTodo = function (dataAttrs, fieldData) {
   for (const key in fieldData) {
     let value;
     if (key === "dueDate" && fieldData[key]) {
-      value = new Date(fieldData[key]);
+      const dateSplit = fieldData[key].split("-");
+      const yr = dateSplit[0];
+      const month = dateSplit[1];
+      const day = dateSplit[2];
+      const date = new Date(yr, month - 1, day, 0, 0, 0);
+      value = date;
     } else {
       value = fieldData[key];
     }
@@ -56,4 +61,12 @@ export const createOrUpdateTodo = function (dataAttrs, fieldData) {
   }
 
   return targetTodo;
+};
+
+export const formatDateYmd = function (dateObject) {
+  const year = dateObject.getFullYear();
+  const month = ("0" + (dateObject.getMonth() + 1)).slice(-2); // month is zero-indexed, also pad zero
+  const day = ("0" + dateObject.getDate()).slice(-2);
+
+  return [year, month, day].join("-");
 };

@@ -69,8 +69,6 @@ export const loadLocalData = function () {
   const loadedLocalData = JSON.parse(localDataStr, reviver);
   localData.projects = loadedLocalData.projects;
   localData.config = loadedLocalData.config;
-
-  // console.log(typeof localData.projects[0].todos[1].get("dueDate")); //delete me
 };
 
 // delete me
