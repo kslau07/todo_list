@@ -32,9 +32,13 @@
   --color-black: #0a0a0a;
 
   --color-accent1: #2dd4bf;
+  --color-accent1-alt: #1c877a;
 
   /* Drop shadow */
   --drop-shadow-md: drop-shadow(3px 3px 2px #e5e5e5);
+}
+
+body {
 }
 
 .border-red {

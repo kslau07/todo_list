@@ -148,19 +148,35 @@ header {
 
 .nav__item {
   font-family: "Montserrat", sans-serif;
-  cursor: pointer;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-xs);
+  width: 250px;
+  /* cursor: pointer; */
 }
 
 .nav__item:hover {
   opacity: 65%;
 }
 
-.nav__list--primary > .nav__item {
-  /* width: min-content; */
+.nav__item--timeframe-link {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--color-darkgray);
   background-color: var(--color-lightgray);
-  /* color: white; */
-  padding: 0.5em 6em;
+  padding: 0.5em 0;
+  width: 100%;
   border-radius: 7px;
+}
+
+.nav__item--project-link {
+  text-decoration: none;
+  color: var(--color-accent1-alt);
+  font-weight: 600;
+}
+
+.nav__item--project-link:focus,
+.nav__item--project-link:hover {
+  text-decoration: underline;
 }
 
 .nav__close-button-container {
@@ -243,4 +259,8 @@ header {
 
 option[data-action="create-project"] {
   font-weight: 900;
+}
+
+.main__title-view-value {
+  color: var(--color-accent1-alt);
 }

@@ -3,15 +3,16 @@ import "./style.css";
 import { saveLocalData, loadLocalData, hasStorage } from "./readWrite";
 import { openModal, updateDropdown } from "./modal";
 import { createProject, formatDateYmd } from "./utilities";
-import { todosFilteredByView } from "./filters";
+import { filterTodos } from "./filters";
+import { populateNavTimeframes, populateNavProjects } from "./nav";
 
 export const localData = {
   projects: [],
   config: {
     projectCounter: 0,
     todoCounter: 0,
-    lastView: "all",
-    lastProject: "default",
+    lastViewConstraint: "timeframe",
+    lastViewValue: "all",
   },
 };
 
@@ -27,12 +28,11 @@ const initializeNewData = function () {
   createProject("default");
 };
 
-const populateTodos = function () {
-  const { lastView } = localData.config;
-  console.log("hello from populateTodos");
-  console.log("lastView: ");
-  console.log(lastView);
-  const filteredTodos = todosFilteredByView(lastView);
+const populateMainTodos = function () {
+  const { lastViewConstraint } = localData.config;
+  const { lastViewValue } = localData.config;
+
+  const filteredTodos = filterTodos(lastViewConstraint, lastViewValue);
 
   const todosUl = document.querySelector(".main__todos");
   todosUl.innerHTML = "";
@@ -58,8 +58,10 @@ const populateTodos = function () {
 };
 
 export const refreshUI = function () {
-  populateTodos();
+  populateMainTodos();
   updateDropdown();
+  populateNavTimeframes();
+  populateNavProjects();
 };
 
 if (!hasStorage("localStorage")) alert("Warning: Unable to save locally.");

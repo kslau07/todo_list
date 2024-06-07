@@ -12,21 +12,74 @@ const nav = document.querySelector(".nav");
 const toggleShow = function () {
   nav.classList.toggle("show");
 };
+
 navToggle.addEventListener("click", toggleShow);
 const navCloseButton = document.querySelector(".nav__close-button");
 navCloseButton.addEventListener("click", toggleShow);
 
-const navItemAll = document.querySelector(".nav__item--all");
-const navItemToday = document.querySelector(".nav__item--today");
-const navItemUpcoming = document.querySelector(".nav__item--upcoming");
+export const populateNavTimeframes = function () {
+  const timeframes = ["all", "today", "upcoming"];
+  const navListPrimary = document.querySelector(".nav__list--primary");
+  navListPrimary.innerHTML = "";
 
-const changeView = function () {
-  const selectedView = this.textContent.toLowerCase();
-  localData.config.lastView = selectedView;
+  for (const timeframe of timeframes) {
+    const listItem = document.createElement("li");
+    listItem.classList.add("nav__item");
+    const listItemLink = document.createElement("a");
+    listItemLink.classList.add("nav__item--timeframe-link");
+    listItemLink.classList.add(`nav__item--timeframe-link--${timeframe}`);
+    listItemLink.href = "#";
+    listItemLink.text = [
+      timeframe.charAt(0).toUpperCase(),
+      timeframe.slice(1),
+    ].join(""); // Capitalize word
+    listItemLink.addEventListener("click", changeViewTimeframe);
+    listItem.appendChild(listItemLink);
+    navListPrimary.appendChild(listItem);
+  }
+};
+
+const changeViewTimeframe = function () {
+  const selectedView = this.textContent;
+  localData.config.lastViewConstraint = "timeframe";
+  localData.config.lastViewValue = selectedView.toLowerCase();
+  const mainViewType = document.querySelector(".main__title-view-type");
+  mainViewType.textContent = "View: ";
+  const mainViewValue = document.querySelector(".main__title-view-value");
+  mainViewValue.textContent = selectedView;
+
   toggleShow();
   saveLocalData();
 };
 
-navItemAll.addEventListener("click", changeView);
-navItemToday.addEventListener("click", changeView);
-navItemUpcoming.addEventListener("click", changeView);
+const changeViewProject = function () {
+  const selectedProjectName = this.textContent;
+  localData.config.lastViewConstraint = "project";
+  localData.config.lastViewValue = selectedProjectName;
+  const mainViewType = document.querySelector(".main__title-view-type");
+  mainViewType.textContent = "View Project: ";
+  const mainViewValue = document.querySelector(".main__title-view-value");
+  mainViewValue.textContent = selectedProjectName;
+
+  toggleShow();
+  saveLocalData();
+};
+
+export const populateNavProjects = function () {
+  const navListSecondary = document.querySelector(".nav__list--secondary");
+  navListSecondary.innerHTML = "";
+  const { projects } = localData;
+
+  projects.forEach((project) => {
+    const listItem = document.createElement("li");
+    listItem.classList.add("nav__item");
+    const listItemLink = document.createElement("a");
+
+    listItemLink.classList.add("nav__item--project-link");
+    listItemLink.href = "#";
+    listItemLink.text = project.name;
+    listItemLink.addEventListener("click", changeViewProject);
+    listItem.appendChild(listItemLink);
+    navListSecondary.appendChild(listItem);
+  });
+};
