@@ -68,3 +68,7 @@ if (!hasStorage("localStorage")) alert("Warning: Unable to save locally.");
 loadLocalData(localData);
 if (localData.config.projectCounter === 0) initializeNewData();
 refreshUI();
+
+document.cookie = "colortheme=light";
+const cookie = document.cookie;
+console.log(cookie);

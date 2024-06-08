@@ -33,22 +33,56 @@
 
   --color-accent1: #2dd4bf;
   --color-accent1-alt: #1c877a;
+  --color-accent2-alt: #871c4e;
 
   /* Drop shadow */
   --drop-shadow-md: drop-shadow(3px 3px 2px #e5e5e5);
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
 body {
+  letter-spacing: 1px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
 }
 
 .border-red {
   border: 3px solid #f00;
 }
 
+p,
 h1,
 h2,
-h3 {
-  margin: 0;
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
 }
 
 h1,

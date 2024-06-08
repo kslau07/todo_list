@@ -187,15 +187,3 @@ const editExistingTodo = function (projectId, todoId) {
   hiddenInput.dataset.projectId = findProject("id", projectId).id;
   hiddenInput.dataset.todoId = todo.get("id");
 };
-
-// NOTE: Delete me
-// For dev only
-document
-  .querySelector(".button-log-localData")
-  .addEventListener("click", () => console.log(localData));
-document
-  .querySelector(".button-log-projects")
-  .addEventListener("click", () => console.log(localData.projects));
-document
-  .querySelector(".button-print-localstorage")
-  .addEventListener("click", printLocalStorage);

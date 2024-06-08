@@ -46,8 +46,9 @@ const changeViewTimeframe = function () {
   const mainViewType = document.querySelector(".main__title-view-type");
   mainViewType.textContent = "View: ";
   const mainViewValue = document.querySelector(".main__title-view-value");
+  mainViewValue.classList.add("main__title-view-by-timeframe");
+  mainViewValue.classList.remove("main__title-view-by-project");
   mainViewValue.textContent = selectedView;
-
   toggleShow();
   saveLocalData();
 };
@@ -59,8 +60,9 @@ const changeViewProject = function () {
   const mainViewType = document.querySelector(".main__title-view-type");
   mainViewType.textContent = "View Project: ";
   const mainViewValue = document.querySelector(".main__title-view-value");
+  mainViewValue.classList.add("main__title-view-by-project");
+  mainViewValue.classList.remove("main__title-view-by-timeframe");
   mainViewValue.textContent = selectedProjectName;
-
   toggleShow();
   saveLocalData();
 };
@@ -74,7 +76,6 @@ export const populateNavProjects = function () {
     const listItem = document.createElement("li");
     listItem.classList.add("nav__item");
     const listItemLink = document.createElement("a");
-
     listItemLink.classList.add("nav__item--project-link");
     listItemLink.href = "#";
     listItemLink.text = project.name;
