@@ -5,7 +5,6 @@ import { openModal, updateDropdown } from "./modal";
 import { createProject, formatDateYmd } from "./utilities";
 import { filterTodos } from "./filters";
 import { populateNavTimeframes, populateNavProjects } from "./nav";
-// import Star from "./assets/star.svg";
 
 export const localData = {
   projects: [],
@@ -74,4 +73,17 @@ document.cookie = "colortheme=light";
 const cookie = document.cookie;
 console.log(cookie);
 
-//test new branch
+// Pub-sub pattern
+import createBroker from "./Broker";
+import createPublisher from "./Publisher";
+const broker = createBroker();
+const subscriber1 = (data) => console.log("hello i am subscriber1", data);
+const subscriber2 = (data) => console.log("hello, subscriber2 here", data);
+broker.subscribe("important event", subscriber1);
+broker.subscribe("notable event", subscriber2);
+broker.unsubscribe("important event", subscriber1);
+broker.unsubscribe("notable event", subscriber2);
+const publisher = createPublisher(broker);
+publisher.publish("important event", "payload sent");
+publisher.publish("notable event", "another payload sent");
+broker.getSubscriptions();
