@@ -5,6 +5,7 @@ import { openModal, updateDropdown } from "./modal";
 import { createProject, formatDateYmd } from "./utilities";
 import { filterTodos } from "./filters";
 import { populateNavTimeframes, populateNavProjects } from "./nav";
+// import Star from "./assets/star.svg";
 
 export const localData = {
   projects: [],

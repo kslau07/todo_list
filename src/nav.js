@@ -1,6 +1,7 @@
 import { localData } from "./index";
 import { saveLocalData } from "./readWrite";
 import Checkmark from "./assets/checkmark.svg";
+
 const logo = document.querySelector(".logo");
 const checkmark = new Image();
 checkmark.src = Checkmark;
@@ -39,16 +40,29 @@ export const populateNavTimeframes = function () {
   }
 };
 
-const changeViewTimeframe = function () {
-  const selectedView = this.textContent;
-  localData.config.lastViewConstraint = "timeframe";
-  localData.config.lastViewValue = selectedView.toLowerCase();
+// NOTE: MOVE ME TO index.js
+const updateMainViewTitle = function (constraint, value) {
+  // by timeframe
   const mainViewType = document.querySelector(".main__title-view-type");
   mainViewType.textContent = "View: ";
   const mainViewValue = document.querySelector(".main__title-view-value");
   mainViewValue.classList.add("main__title-view-by-timeframe");
   mainViewValue.classList.remove("main__title-view-by-project");
   mainViewValue.textContent = selectedView;
+
+  // by project
+  // const mainViewType = document.querySelector(".main__title-view-type");
+  mainViewType.textContent = "View Project: ";
+  // const mainViewValue = document.querySelector(".main__title-view-value");
+  mainViewValue.classList.add("main__title-view-by-project");
+  mainViewValue.classList.remove("main__title-view-by-timeframe");
+  mainViewValue.textContent = selectedProjectName;
+};
+
+const changeViewTimeframe = function () {
+  const selectedView = this.textContent;
+  localData.config.lastViewConstraint = "timeframe";
+  localData.config.lastViewValue = selectedView.toLowerCase();
   toggleShow();
   saveLocalData();
 };
@@ -57,12 +71,6 @@ const changeViewProject = function () {
   const selectedProjectName = this.textContent;
   localData.config.lastViewConstraint = "project";
   localData.config.lastViewValue = selectedProjectName;
-  const mainViewType = document.querySelector(".main__title-view-type");
-  mainViewType.textContent = "View Project: ";
-  const mainViewValue = document.querySelector(".main__title-view-value");
-  mainViewValue.classList.add("main__title-view-by-project");
-  mainViewValue.classList.remove("main__title-view-by-timeframe");
-  mainViewValue.textContent = selectedProjectName;
   toggleShow();
   saveLocalData();
 };
