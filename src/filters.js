@@ -38,12 +38,14 @@ const filterTodosByProject = function (projectName) {
   return todos;
 };
 
-export const filterTodos = function (constraint, value) {
+export const filterTodos = function () {
+  const { lastViewConstraint, lastViewValue } = localData.config;
+
   let todos;
-  if (constraint === "timeframe") {
-    todos = filterTodosByTimeframe(value);
-  } else if (constraint === "project") {
-    todos = filterTodosByProject(value);
+  if (lastViewConstraint === "timeframe") {
+    todos = filterTodosByTimeframe(lastViewValue);
+  } else if (lastViewConstraint === "project") {
+    todos = filterTodosByProject(lastViewValue);
   }
   return todos;
 };

@@ -34,7 +34,7 @@ header {
   margin: 0 auto;
 }
 
-.nav-toggle {
+.button-nav-open {
   position: absolute;
   inset: var(--space-sm) 0 0 var(--space-sm);
   cursor: pointer;
@@ -48,8 +48,8 @@ header {
   transition: opacity 250ms ease;
 }
 
-.nav-toggle:focus,
-.nav-toggle:hover {
+.button-nav-open:focus,
+.button-nav-open:hover {
   opacity: 0.75;
 }
 
@@ -95,7 +95,7 @@ header {
   filter: var(--drop-shadow-md);
 }
 
-.nav.show {
+.nav.open {
   display: initial;
 }
 
@@ -124,7 +124,7 @@ header {
   opacity: 65%;
 }
 
-.nav__item--timeframe-link {
+.nav__link-timeframe {
   display: inline-block;
   text-decoration: none;
   color: var(--color-darkgray);
@@ -134,18 +134,18 @@ header {
   border-radius: 7px;
 }
 
-.nav__item--project-link {
+.nav__link-project {
   color: var(--color-accent1-alt);
   font-weight: 500;
   text-decoration: none;
 }
 
-.nav__item--project-link:focus,
-.nav__item--project-link:hover {
+.nav__link-project:focus,
+.nav__link-project:hover {
   text-decoration: underline;
 }
 
-.nav__item--settings {
+.nav__link-settings {
   display: inline-block;
   width: min(250px, 100%);
   padding: var(--space-md) 0;

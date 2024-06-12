@@ -56,8 +56,6 @@ function reviver(key, value) {
 }
 
 export const saveLocalData = function () {
-  console.log("hello from saveLocalData");
-
   if (!hasStorage("localStorage")) return;
 
   localStorage.setItem("localData", JSON.stringify(localData, replacer));
@@ -71,11 +69,4 @@ export const loadLocalData = function () {
   const loadedLocalData = JSON.parse(localDataStr, reviver);
   localData.projects = loadedLocalData.projects;
   localData.config = loadedLocalData.config;
-};
-
-// delete me
-export const printLocalStorage = function () {
-  console.log("from printLocalStorage()");
-  const localDataStr = localStorage.getItem("localData");
-  console.log(localDataStr);
 };

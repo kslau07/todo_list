@@ -9,8 +9,6 @@ import {
   formatDateYmd,
 } from "./utilities";
 
-const buttonOpenModal = document.querySelector(".button-open-modal");
-
 const resetForm = function () {
   document.querySelector(".modal__title").textContent = "Add Todo";
   document.querySelector(".modal__title-input").value = "";
@@ -38,22 +36,19 @@ const resetForm = function () {
   dropdown.disabled = false;
 };
 
-export const openModal = function () {
+export const openModal = function (targetElem) {
   const modal = document.querySelector(".modal");
   const backdrop = document.querySelector(".backdrop");
   modal.classList.add("show");
   backdrop.classList.add("show");
 
-  if (this.dataset.projectId) {
-    editExistingTodo(this.dataset.projectId, this.dataset.todoId);
+  if (targetElem.dataset.projectId) {
+    editExistingTodo(targetElem.dataset.projectId, targetElem.dataset.todoId);
   }
 };
-buttonOpenModal.addEventListener("click", openModal);
 
 const buttonCloseModal = document.querySelector(".button-close-modal");
 export const closeModal = function () {
-  console.log("hello from  closeModal");
-
   const modal = document.querySelector(".modal");
   const backdrop = document.querySelector(".backdrop");
   modal.classList.remove("show");
@@ -108,7 +103,6 @@ const isInputValid = function (inputElem) {
 };
 
 export const saveTodo = function () {
-  console.log("hello from saveTodo");
   const projectsDropdown = document.querySelector(".modal__projects-select");
   const selectedProject = getDropdownSelection(projectsDropdown);
   const todoTitle = document.querySelector(".modal__title-input").value;

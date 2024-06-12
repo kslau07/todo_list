@@ -4,23 +4,13 @@ import { saveLocalData, loadLocalData, hasStorage } from "./readWrite";
 import { openModal, updateDropdown, saveTodo, closeModal } from "./modal";
 import { createProject, formatDateYmd } from "./utilities";
 import { filterTodos } from "./filters";
-import { populateNavTimeframes, populateNavProjects } from "./nav";
-
-// Implement pub-sub pattern
-import createBroker from "./Broker";
-import createPublisher from "./Publisher";
-export const broker = createBroker();
-export const publisher = createPublisher(broker);
-
-// Button clicks, link clicks, etc. become published events
-document
-  .querySelector(".button-save-todo")
-  .addEventListener("click", () => publisher.publish("save todo"));
-
-// Subscriptions
-broker.subscribe("save todo", saveTodo);
-broker.subscribe("save todo", closeModal);
-broker.subscribe("save todo", saveLocalData);
+import {
+  populateNavTimeframes,
+  populateNavProjects,
+  changeView,
+  navOpen,
+  navClose,
+} from "./nav";
 
 export const localData = {
   projects: [],
@@ -40,16 +30,9 @@ export const allTodos = function () {
   return todosArray;
 };
 
-const initializeNewData = function () {
-  createProject("default");
-};
-
 const populateMainTodos = function () {
-  const { lastViewConstraint } = localData.config;
-  const { lastViewValue } = localData.config;
-
+  const { lastViewConstraint, lastViewValue } = localData.config;
   const filteredTodos = filterTodos(lastViewConstraint, lastViewValue);
-
   const todosUl = document.querySelector(".main__todos");
   todosUl.innerHTML = "";
 
@@ -59,7 +42,9 @@ const populateMainTodos = function () {
     titleDiv.textContent = todo.get("title");
     titleDiv.dataset.projectId = todo.get("projectId");
     titleDiv.dataset.todoId = todo.get("id");
-    titleDiv.addEventListener("click", openModal);
+    titleDiv.addEventListener("click", function () {
+      publisher.publish("open modal", this);
+    });
     todosUl.appendChild(titleDiv);
     const dueDateDiv = document.createElement("div");
     dueDateDiv.classList.add("main__todos-due-date");
@@ -73,16 +58,17 @@ const populateMainTodos = function () {
   });
 };
 
-export const updateMainViewTitle = function (constraint, value) {
+export const updateMainViewTitle = function () {
+  const { lastViewConstraint, lastViewValue } = localData.config;
   const mainViewType = document.querySelector(".main__title-view-type");
   const mainViewValue = document.querySelector(".main__title-view-value");
-  mainViewValue.textContent = value;
+  mainViewValue.textContent = lastViewValue;
 
-  if (constraint == "timeframe") {
+  if (lastViewConstraint == "timeframe") {
     mainViewType.textContent = "View: ";
     mainViewValue.classList.add("main__title-view-by-timeframe");
     mainViewValue.classList.remove("main__title-view-by-project");
-  } else if (constraint === "project") {
+  } else if (lastViewConstraint === "project") {
     mainViewType.textContent = "View by Project: ";
     mainViewValue.classList.add("main__title-view-by-project");
     mainViewValue.classList.remove("main__title-view-by-timeframe");
@@ -90,46 +76,64 @@ export const updateMainViewTitle = function (constraint, value) {
 };
 
 export const refreshUI = function () {
-  console.log("hello from refreshUI");
-
   populateMainTodos();
+  updateMainViewTitle();
   updateDropdown();
   populateNavTimeframes();
   populateNavProjects();
 };
 
-if (!hasStorage("localStorage")) alert("Warning: Unable to save locally.");
-loadLocalData(localData);
-if (localData.config.projectCounter === 0) initializeNewData();
-refreshUI();
+const initializeNewData = function () {
+  createProject("default");
+};
+
+const firstLoad = function () {
+  if (!hasStorage("localStorage")) alert("Warning: Unable to save locally.");
+  loadLocalData(localData);
+  if (localData.config.projectCounter === 0) initializeNewData();
+};
 
 document.cookie = "colortheme=light";
 const cookie = document.cookie;
-console.log(cookie);
+// console.log(cookie);
 
-// Create a real subscriber now
-// A subscriber waits for an event to happen and then is alerted that the event took place
-// The subscriber will be given a payload, then decide what to do with the new information
+// Implement pub-sub pattern
+import createBroker from "./Broker";
+import createPublisher from "./Publisher";
+export const broker = createBroker();
+export const publisher = createPublisher(broker);
 
-// What are the events and who are the subscribers?
-// * event: "changeView", payload: {constraint: "timeframe", value: "all"}
-//   Who would care?
-//   - main -> update veiw title
-//   - main -> populate todo list
-//   - nav -> project should be highlighted
-//
-// * event: "addTodo", payload: { ??? }
-//   Who would care?
-//   - main -> Redraw UI
+// Subscribe to events
+broker.subscribe("start up", firstLoad);
+broker.subscribe("start up", saveLocalData);
 
-// Who cares about these events?
-// const subscriber1 = (data) => console.log("hello i am subscriber1", data);
-// const subscriber2 = (data) => console.log("hello, subscriber2 here", data);
-// broker.subscribe("important event", subscriber1);
-// broker.subscribe("notable event", subscriber2);
-// broker.unsubscribe("important event", subscriber1);
-// broker.unsubscribe("notable event", subscriber2);
+broker.subscribe("open modal", openModal);
+broker.subscribe("open modal", navClose);
 
-// publisher.publish("important event", "payload sent");
-// publisher.publish("notable event", "another payload sent");
-// broker.getSubscriptions();
+broker.subscribe("nav open", navOpen);
+broker.subscribe("nav open", closeModal);
+
+broker.subscribe("save todo", saveTodo);
+broker.subscribe("save todo", closeModal);
+broker.subscribe("save todo", saveLocalData);
+
+broker.subscribe("change view", changeView); // fix this
+broker.subscribe("change view", navClose);
+broker.subscribe("change view", saveLocalData);
+
+// Publish events
+document
+  .querySelector(".button-save-todo")
+  .addEventListener("click", () => publisher.publish("save todo"));
+
+document
+  .querySelector(".button-nav-open")
+  .addEventListener("click", () => publisher.publish("nav open"));
+
+document
+  .querySelector(".button-open-modal")
+  .addEventListener("click", function () {
+    publisher.publish("open modal", this);
+  });
+// Publish event for first load
+publisher.publish("start up");

@@ -1,4 +1,4 @@
-import { localData, updateMainViewTitle } from "./index";
+import { localData, updateMainViewTitle, publisher } from "./index";
 import { saveLocalData } from "./readWrite";
 import Checkmark from "./assets/checkmark.svg";
 
@@ -8,15 +8,18 @@ checkmark.src = Checkmark;
 checkmark.classList.add("logo-image");
 logo.insertBefore(checkmark, logo.childNodes[1]);
 
-const navToggle = document.querySelector(".nav-toggle");
 const nav = document.querySelector(".nav");
-const toggleShow = function () {
-  nav.classList.toggle("show");
+
+export const navOpen = function () {
+  nav.classList.add("open");
 };
 
-navToggle.addEventListener("click", toggleShow);
+export const navClose = function () {
+  nav.classList.remove("open");
+};
+
 const navCloseButton = document.querySelector(".nav__close-button");
-navCloseButton.addEventListener("click", toggleShow);
+navCloseButton.addEventListener("click", navClose);
 
 export const populateNavTimeframes = function () {
   const timeframes = ["all", "today", "upcoming"];
@@ -27,37 +30,24 @@ export const populateNavTimeframes = function () {
     const listItem = document.createElement("li");
     listItem.classList.add("nav__item");
     const listItemLink = document.createElement("a");
-    listItemLink.classList.add("nav__item--timeframe-link");
-    listItemLink.classList.add(`nav__item--timeframe-link--${timeframe}`);
+    listItemLink.classList.add("nav__link-timeframe");
+    listItemLink.classList.add(`nav__link-timeframe-${timeframe}`);
     listItemLink.href = "#";
     listItemLink.text = [
       timeframe.charAt(0).toUpperCase(),
       timeframe.slice(1),
     ].join(""); // Capitalize word
-    listItemLink.addEventListener("click", changeViewTimeframe);
+
+    listItemLink.addEventListener("click", () =>
+      publisher.publish("change view", {
+        constraint: "timeframe",
+        value: timeframe,
+      }),
+    );
+
     listItem.appendChild(listItemLink);
     navListPrimary.appendChild(listItem);
   }
-};
-
-const changeViewTimeframe = function () {
-  const selectedView = this.textContent;
-  const constraint = "timeframe";
-  localData.config.lastViewConstraint = constraint;
-  localData.config.lastViewValue = selectedView.toLowerCase();
-  updateMainViewTitle(constraint, selectedView);
-  toggleShow();
-  saveLocalData();
-};
-
-const changeViewProject = function () {
-  const selectedProjectName = this.textContent;
-  const constraint = "project";
-  localData.config.lastViewConstraint = constraint;
-  localData.config.lastViewValue = selectedProjectName;
-  updateMainViewTitle(constraint, selectedProjectName);
-  toggleShow();
-  saveLocalData();
 };
 
 export const populateNavProjects = function () {
@@ -69,11 +59,44 @@ export const populateNavProjects = function () {
     const listItem = document.createElement("li");
     listItem.classList.add("nav__item");
     const listItemLink = document.createElement("a");
-    listItemLink.classList.add("nav__item--project-link");
+    listItemLink.classList.add("nav__link-project");
     listItemLink.href = "#";
     listItemLink.text = project.name;
-    listItemLink.addEventListener("click", changeViewProject);
+
+    listItemLink.addEventListener("click", () =>
+      publisher.publish("change view", {
+        constraint: "project",
+        value: project.name,
+      }),
+    );
+
     listItem.appendChild(listItemLink);
     navListSecondary.appendChild(listItem);
   });
+};
+
+const changeViewTimeframe = function () {
+  const selectedView = this.textContent;
+  const constraint = "timeframe";
+  localData.config.lastViewConstraint = constraint;
+  localData.config.lastViewValue = selectedView.toLowerCase();
+  updateMainViewTitle(constraint, selectedView);
+  // toggleShow();
+  // saveLocalData();
+};
+
+const changeViewProject = function () {
+  const selectedProjectName = this.textContent;
+  const constraint = "project";
+  localData.config.lastViewConstraint = constraint;
+  localData.config.lastViewValue = selectedProjectName;
+  updateMainViewTitle(constraint, selectedProjectName);
+  // toggleShow();
+  // saveLocalData();
+};
+
+export const changeView = function ({ constraint, value }) {
+  localData.config.lastViewConstraint = constraint;
+  localData.config.lastViewValue = value;
+  updateMainViewTitle();
 };
