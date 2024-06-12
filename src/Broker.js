@@ -1,7 +1,7 @@
 export default function createBroker() {
   const subscriptions = {};
   return {
-    getSubscriptions: () => console.log(subscriptions), // delete me
+    // getSubscriptions: () => console.log(subscriptions), // delete me
     subscribe: function (event, callback) {
       if (subscriptions[event]) {
         subscriptions[event] = [...subscriptions[event], callback];
@@ -9,11 +9,13 @@ export default function createBroker() {
         subscriptions[event] = [callback];
       }
     },
+
     unsubscribe: function (event, callback) {
       subscriptions[event] = subscriptions[event].filter(
         (val) => val !== callback,
       );
     },
+
     publish: function (event, payload) {
       if (!subscriptions[event]) return;
 

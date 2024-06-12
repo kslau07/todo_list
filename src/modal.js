@@ -1,4 +1,4 @@
-import { localData } from "./index";
+import { localData, publisher, broker } from "./index";
 import { saveLocalData, localLocalData, printLocalStorage } from "./readWrite";
 import {
   getDropdownSelection,
@@ -51,7 +51,9 @@ export const openModal = function () {
 buttonOpenModal.addEventListener("click", openModal);
 
 const buttonCloseModal = document.querySelector(".button-close-modal");
-const closeModal = function () {
+export const closeModal = function () {
+  console.log("hello from  closeModal");
+
   const modal = document.querySelector(".modal");
   const backdrop = document.querySelector(".backdrop");
   modal.classList.remove("show");
@@ -105,9 +107,8 @@ const isInputValid = function (inputElem) {
   return condition1 || condition2 ? true : false;
 };
 
-const buttonAddtodo = document.querySelector(".button-save-todo");
-
-const saveTodo = function () {
+export const saveTodo = function () {
+  console.log("hello from saveTodo");
   const projectsDropdown = document.querySelector(".modal__projects-select");
   const selectedProject = getDropdownSelection(projectsDropdown);
   const todoTitle = document.querySelector(".modal__title-input").value;
@@ -148,12 +149,8 @@ const saveTodo = function () {
       priority: selectedPriority.value,
     };
     createOrUpdateTodo(todoDataAttrs, todoFieldData);
-
-    closeModal();
-    saveLocalData();
   }
 };
-buttonAddtodo.addEventListener("click", saveTodo);
 
 const editExistingTodo = function (projectId, todoId) {
   const project = findProject("id", projectId);

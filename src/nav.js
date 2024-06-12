@@ -1,4 +1,4 @@
-import { localData } from "./index";
+import { localData, updateMainViewTitle } from "./index";
 import { saveLocalData } from "./readWrite";
 import Checkmark from "./assets/checkmark.svg";
 
@@ -40,37 +40,22 @@ export const populateNavTimeframes = function () {
   }
 };
 
-// NOTE: MOVE ME TO index.js
-const updateMainViewTitle = function (constraint, value) {
-  // by timeframe
-  const mainViewType = document.querySelector(".main__title-view-type");
-  mainViewType.textContent = "View: ";
-  const mainViewValue = document.querySelector(".main__title-view-value");
-  mainViewValue.classList.add("main__title-view-by-timeframe");
-  mainViewValue.classList.remove("main__title-view-by-project");
-  mainViewValue.textContent = selectedView;
-
-  // by project
-  // const mainViewType = document.querySelector(".main__title-view-type");
-  mainViewType.textContent = "View Project: ";
-  // const mainViewValue = document.querySelector(".main__title-view-value");
-  mainViewValue.classList.add("main__title-view-by-project");
-  mainViewValue.classList.remove("main__title-view-by-timeframe");
-  mainViewValue.textContent = selectedProjectName;
-};
-
 const changeViewTimeframe = function () {
   const selectedView = this.textContent;
-  localData.config.lastViewConstraint = "timeframe";
+  const constraint = "timeframe";
+  localData.config.lastViewConstraint = constraint;
   localData.config.lastViewValue = selectedView.toLowerCase();
+  updateMainViewTitle(constraint, selectedView);
   toggleShow();
   saveLocalData();
 };
 
 const changeViewProject = function () {
   const selectedProjectName = this.textContent;
-  localData.config.lastViewConstraint = "project";
+  const constraint = "project";
+  localData.config.lastViewConstraint = constraint;
   localData.config.lastViewValue = selectedProjectName;
+  updateMainViewTitle(constraint, selectedProjectName);
   toggleShow();
   saveLocalData();
 };

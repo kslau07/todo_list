@@ -56,6 +56,8 @@ function reviver(key, value) {
 }
 
 export const saveLocalData = function () {
+  console.log("hello from saveLocalData");
+
   if (!hasStorage("localStorage")) return;
 
   localStorage.setItem("localData", JSON.stringify(localData, replacer));
