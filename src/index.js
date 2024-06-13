@@ -2,7 +2,7 @@ import "./global.css";
 import "./style.css";
 import { saveLocalData, loadLocalData, hasStorage } from "./readWrite";
 import { openModal, updateDropdown, saveTodo, closeModal } from "./modal";
-import { createProject, formatDateYmd } from "./utilities";
+import { createProject, formatDateYmd, findProject } from "./utilities";
 import { filterTodos } from "./filters";
 import {
   populateNavTimeframes,
@@ -33,45 +33,56 @@ export const allTodos = function () {
 const populateMainTodos = function () {
   const { lastViewConstraint, lastViewValue } = localData.config;
   const filteredTodos = filterTodos(lastViewConstraint, lastViewValue);
-  const todosUl = document.querySelector(".main__todos");
-  todosUl.innerHTML = "";
+  const todosList = document.querySelector(".main__todos-list");
+  todosList.innerHTML = "";
 
   filteredTodos.forEach((todo) => {
-    const titleDiv = document.createElement("div");
-    titleDiv.classList.add("main__todos-title");
-    titleDiv.textContent = todo.get("title");
-    titleDiv.dataset.projectId = todo.get("projectId");
-    titleDiv.dataset.todoId = todo.get("id");
-    titleDiv.addEventListener("click", function () {
+    const todoCard = document.createElement("div");
+    todoCard.classList.add("todo-card");
+
+    const todoTitle = document.createElement("div");
+    todoTitle.classList.add("todo-card__title");
+    todoTitle.textContent = todo.get("title");
+    todoTitle.dataset.projectId = todo.get("projectId");
+    todoTitle.dataset.todoId = todo.get("id");
+    todoTitle.addEventListener("click", function () {
       publisher.publish("open modal", this);
     });
-    todosUl.appendChild(titleDiv);
-    const dueDateDiv = document.createElement("div");
-    dueDateDiv.classList.add("main__todos-due-date");
 
-    const dueDate = todo.get("dueDate");
-    if (dueDate) {
-      dueDateDiv.textContent = formatDateYmd(dueDate);
-    }
+    const todoProjectName = document.createElement("div");
+    const projName = findProject("id", todo.get("projectId")).name;
+    todoProjectName.classList.add("todo-card__project-name");
+    todoProjectName.textContent = projName;
 
-    todosUl.appendChild(dueDateDiv);
+    // const dueDateDiv = document.createElement("div");
+    // dueDateDiv.classList.add("todo-card__due-date");
+
+    // const dueDate = todo.get("dueDate");
+    // if (dueDate) {
+    //   dueDateDiv.textContent = formatDateYmd(dueDate);
+    // }
+
+    todoCard.appendChild(todoTitle);
+    // todoCard.appendChild(dueDateDiv);
+    todoCard.appendChild(todoProjectName);
+    todosList.appendChild(todoCard);
   });
 };
 
 export const updateMainViewTitle = function () {
   const { lastViewConstraint, lastViewValue } = localData.config;
-  const mainViewType = document.querySelector(".main__title-view-type");
-  const mainViewValue = document.querySelector(".main__title-view-value");
+  const mainViewType = document.querySelector(".main__view-title-type");
+  const mainViewValue = document.querySelector(".main__view-title-value");
   mainViewValue.textContent = lastViewValue;
 
   if (lastViewConstraint == "timeframe") {
     mainViewType.textContent = "View: ";
-    mainViewValue.classList.add("main__title-view-by-timeframe");
-    mainViewValue.classList.remove("main__title-view-by-project");
+    mainViewValue.classList.add("main__view-title-by-timeframe");
+    mainViewValue.classList.remove("main__view-title-by-project");
   } else if (lastViewConstraint === "project") {
     mainViewType.textContent = "View by Project: ";
-    mainViewValue.classList.add("main__title-view-by-project");
-    mainViewValue.classList.remove("main__title-view-by-timeframe");
+    mainViewValue.classList.add("main__view-title-by-project");
+    mainViewValue.classList.remove("main__view-title-by-timeframe");
   }
 };
 

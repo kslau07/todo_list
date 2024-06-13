@@ -25,6 +25,7 @@
   /* Colors */
   --color-white: white;
   --color-eggshell: #fafafa;
+  --color-porcelain: #efefef;
   --color-lightgray: #e5e5e5;
   --color-gray: #a3a3a3;
   --color-darkgray: #525252;
@@ -37,6 +38,9 @@
 
   /* Drop shadow */
   --drop-shadow-md: drop-shadow(3px 3px 2px #e5e5e5);
+
+  /* Border radius */
+  --border-radius: 5px;
 }
 
 *,
