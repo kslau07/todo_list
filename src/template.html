@@ -22,7 +22,11 @@
           <span class="logo-word-todo">todo</span
           ><span class="logo-word-list">list</span></a
         >
+      </div>
+    </header>
 
+    <main class="main">
+      <div class="container grid-container">
         <nav class="nav">
           <div class="nav__close-button-container">
             <button class="nav__close-button"></button>
@@ -34,17 +38,16 @@
 
           <a href="#" class="nav__item nav__link-settings">Settings</a>
         </nav>
-      </div>
-    </header>
-    <main class="main">
-      <div class="container">
-        <h3 class="main__title">
-          <span class="main__title-view-type">View: </span>
-          <span class="main__title-view-value">All</span>
-        </h3>
-        <ul class="main__todos"></ul>
-        <div class="backdrop"></div>
-        <button class="button-open-modal">Add todo</button>
+
+        <div class="main__todo-list-container">
+          <h3 class="main__title">
+            <span class="main__title-view-type">View: </span>
+            <span class="main__title-view-value">All</span>
+          </h3>
+          <ul class="main__todos"></ul>
+          <div class="backdrop"></div>
+          <button class="button-open-modal">Add todo</button>
+        </div>
 
         <div class="modal">
           <form onsubmit="return false;">
