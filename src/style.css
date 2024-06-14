@@ -277,13 +277,13 @@ option[data-action="create-project"] {
   padding: var(--space-sm);
 }
 
-.button-open-modal {
+.button-new-todo {
   color: var(--color-white);
   font-size: var(--text-lg);
   font-weight: 600;
   background: rgb(37, 219, 30);
-  padding: var(--space-lg) var(--space-xl);
-  border-radius: 9px;
+  padding: 1.125em 1.125em;
+  border-radius: 3px;
   border: 0;
   border: 3px solid lime;
   transition: transform 50ms;
@@ -293,17 +293,17 @@ option[data-action="create-project"] {
   justify-content: center;
 }
 
-.button-open-modal:focus,
-.button-open-modal:hover {
+.button-new-todo:focus,
+.button-new-todo:hover {
   cursor: pointer;
   filter: brightness(150%);
   transform: scale(1.05);
 }
 
-.button-open-modal:active {
+.button-new-todo:active {
 }
 
-.button-open-modal::before {
+.button-new-todo::before {
   position: relative;
   top: -1px;
   font-size: var(--text-xxxl);
@@ -336,26 +336,34 @@ option[data-action="create-project"] {
   padding: var(--space-xs);
   display: grid;
   grid-template-areas:
-    "todo-title         button-expand"
-    "todo-project       button-expand"
-    "expanded-section   expanded-section";
+    "card-title      button-expand"
+    "card-body       button-expand";
+  /* "todo-project       todo-project"; */
+  /* "expanded-section   expanded-section"; */
   /* grid-template-rows: auto auto auto; */
   /* grid-template-columns: auto auto; */
 }
 
 .todo-card__title {
-  grid-area: todo-title;
+  grid-area: card-title;
   color: var(--color-black);
 }
 
-.todo-card__project-name {
-  grid-area: todo-project;
-  color: var(--color-gray);
-  font-family: "Barlow Semi Condensed", sans-serif;
-  letter-spacing: 0.5px;
+.todo-card__body-container {
+  grid-area: card-body;
 }
 
-.button-expand-todo {
+.todo-card__body-simple,
+.todo-card__body-expanded {
+  display: none;
+}
+
+.todo-card__body-simple.show,
+.todo-card__body-expanded.show {
+  display: block;
+}
+
+.button-expanded-section {
   visibility: hidden;
   justify-self: end;
   align-self: center;
@@ -365,30 +373,29 @@ option[data-action="create-project"] {
   background-color: var(--color-porcelain);
   border-radius: 50%;
   border: 0;
+  transition: transform 125ms;
 }
 
-.button-expand-todo img {
+.button-expanded-section img {
   position: relative;
   left: -1px;
 }
 
-.button-expand-todo:hover {
+.button-expanded-section:hover {
   cursor: pointer;
 }
 
-.todo-card:hover .button-expand-todo {
+.todo-card:hover .button-expanded-section {
   visibility: visible;
 }
 
-.todo-card__expanded-section {
-  display: none;
+.button-expanded-section:hover {
+  filter: brightness(0.85);
 }
 
-.todo-card__expanded-section.show {
-  grid-area: expanded-section;
-  display: block;
-  width: 100%;
-  background-color: #f00;
+.button-expanded-section.show {
+  visibility: visible;
+  transform: rotate(-90deg);
 }
 
 @media (min-width: 800px) {

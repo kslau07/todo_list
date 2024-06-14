@@ -2,7 +2,12 @@ import "./global.css";
 import "./style.css";
 import { saveLocalData, loadLocalData, hasStorage } from "./readWrite";
 import { openModal, updateDropdown, saveTodo, closeModal } from "./modal";
-import { createProject, formatDateYmd, findProject } from "./utilities";
+import {
+  createProject,
+  formatDateYmd,
+  findProject,
+  findTodo,
+} from "./utilities";
 import { filterTodos } from "./filters";
 import {
   populateNavTimeframes,
@@ -38,68 +43,92 @@ const populateMainTodos = function () {
   todosList.innerHTML = "";
 
   filteredTodos.forEach((todo) => {
+    const todoId = todo.get("id");
+    const projectId = todo.get("projectId");
     const todoCard = document.createElement("div");
     todoCard.classList.add("todo-card");
 
     const todoTitle = document.createElement("div");
     todoTitle.classList.add("todo-card__title");
     todoTitle.textContent = todo.get("title");
-    todoTitle.dataset.projectId = todo.get("projectId");
-    todoTitle.dataset.todoId = todo.get("id");
+    todoTitle.dataset.projectId = projectId;
+    todoTitle.dataset.todoId = todoId;
     todoTitle.addEventListener("click", function () {
       publisher.publish("open modal", this);
     });
 
-    const todoProjectName = document.createElement("div");
-    const projName = findProject("id", todo.get("projectId")).name;
-    todoProjectName.classList.add("todo-card__project-name");
-    todoProjectName.textContent = projName;
+    const buttonExpand = createButtonExpandedSection(todoId);
+    buttonExpand.dataset.projectId = projectId;
 
-    const buttonExpand = document.createElement("button");
-    buttonExpand.type = "button";
-    buttonExpand.classList.add("button-expand-todo");
-    // buttonExpand.dataset.projectId = todo.get("projectId");
-    buttonExpand.dataset.todoId = todo.get("id");
-    buttonExpand.addEventListener("click", toggleExpandedSection);
-    const leftArrow = new Image();
-    leftArrow.src = LeftArrow;
-    leftArrow.alt = "A left arrow that expands this todo";
-    buttonExpand.appendChild(leftArrow);
-
-    // const dueDateDiv = document.createElement("div");
-    // dueDateDiv.classList.add("todo-card__due-date");
-
-    // const dueDate = todo.get("dueDate");
-    // if (dueDate) {
-    //   dueDateDiv.textContent = formatDateYmd(dueDate);
-    // }
-
-    // Consider extracting to own function
-    const expandedSection = createDivExpandedSection(todo);
-
+    const todoBody = createTodoBody(todoId);
     todoCard.appendChild(todoTitle);
     // todoCard.appendChild(dueDateDiv);
-    todoCard.appendChild(todoProjectName);
     todoCard.appendChild(buttonExpand);
-    todoCard.appendChild(expandedSection);
+    todoCard.appendChild(todoBody);
     todosList.appendChild(todoCard);
   });
 };
 
-const toggleExpandedSection = function () {
-  const expandedSection = document.querySelector(
-    `#expanded-section-todo-id-${this.dataset.todoId}`,
-  );
-  expandedSection.classList.toggle("show");
+const createTodoBody = function (todoId) {
+  const divTodoBody = document.createElement("div");
+  divTodoBody.id = `todo-card__body-container--todo-id-${todoId}`;
+  divTodoBody.classList.add("todo-card__body-container");
+  const divTodoBodySimple = createTodoBodySimple(todoId);
+  const divTodoBodyExpanded = createTodoBodyExpanded(todoId);
+  divTodoBody.appendChild(divTodoBodySimple);
+  divTodoBody.appendChild(divTodoBodyExpanded);
+  return divTodoBody;
 };
 
-const createDivExpandedSection = function (todo) {
+const createTodoBodySimple = function (todoId) {
+  const targetTodo = findTodo("id", todoId);
+  const targetProject = findProject("id", targetTodo.get("projectId"));
   const div = document.createElement("div");
-  // div.textContent = "[edit] [delete] [more]";
-  div.textContent = `Description: ${todo.get("description")}`;
-  div.classList.add("todo-card__expanded-section");
-  div.id = `expanded-section-todo-id-${todo.get("id")}`;
+  div.id = `todo-card__body-simple--todo-id-${todoId}`;
+  div.classList.add("todo-card__body-simple");
+  div.textContent = targetProject.name;
+  div.classList.add("show");
   return div;
+};
+
+const createTodoBodyExpanded = function (todoId) {
+  const div = document.createElement("div");
+  div.id = `todo-card__body-expanded--todo-id-${todoId}`;
+  div.classList.add("todo-card__body-expanded");
+  div.textContent = "expanded here";
+  return div;
+};
+
+const toggleExpandedSection = function () {
+  const buttonExpand = document.querySelector(
+    `#button-expanded-section--todo-id-${this.dataset.todoId}`,
+  );
+  buttonExpand.classList.toggle("show");
+
+  const divTodoBodySimple = document.querySelector(
+    `#todo-card__body-simple--todo-id-${this.dataset.todoId}`,
+  );
+  divTodoBodySimple.classList.toggle("show");
+
+  const divTodoBodyExpanded = document.querySelector(
+    `#todo-card__body-expanded--todo-id-${this.dataset.todoId}`,
+  );
+  divTodoBodyExpanded.classList.toggle("show");
+};
+
+const createButtonExpandedSection = function (todoId) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.id = `button-expanded-section--todo-id-${todoId}`;
+  button.classList.add("button-expanded-section");
+  button.dataset.todoId = todoId;
+  button.addEventListener("click", toggleExpandedSection);
+  const leftArrow = new Image();
+  leftArrow.src = LeftArrow;
+  leftArrow.alt = "A left arrow that expands this todo";
+  button.appendChild(leftArrow);
+
+  return button;
 };
 
 export const updateMainViewTitle = function () {
@@ -175,7 +204,7 @@ document
   .addEventListener("click", () => publisher.publish("nav open"));
 
 document
-  .querySelector(".button-open-modal")
+  .querySelector(".button-new-todo")
   .addEventListener("click", function () {
     publisher.publish("open modal", this);
   });

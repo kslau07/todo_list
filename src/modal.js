@@ -148,7 +148,8 @@ export const saveTodo = function () {
 
 const editExistingTodo = function (projectId, todoId) {
   const project = findProject("id", projectId);
-  const todo = findTodo("id", todoId, projectId);
+  const todo = findTodo("id", todoId);
+  // const todo = findTodo("id", todoId, projectId);
   const modalTitle = document.querySelector(".modal__title");
   modalTitle.textContent = "Update Todo";
   const inputTitle = document.querySelector(".modal__title-input");

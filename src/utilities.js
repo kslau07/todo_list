@@ -1,4 +1,4 @@
-import { localData } from "./index";
+import { localData, allTodos } from "./index";
 export const getDropdownSelection = function (dropdownElement) {
   return dropdownElement.options[dropdownElement.selectedIndex];
 };
@@ -22,9 +22,11 @@ const nextId = function (dataType) {
   return (localData.config[counterType] = localData.config[counterType] + 1);
 };
 
-export const findTodo = function (key, value, projectId) {
-  const project = findProject("id", projectId);
-  return project.todos.find((todo) => todo.get(key) == value);
+export const findTodo = function (key, value) {
+  const todos = allTodos();
+  return todos.find((todo) => todo.get(key) == value);
+  // const project = findProject("id", projectId);
+  // return project.todos.find((todo) => todo.get(key) == value);
 };
 
 const createTodo = function (project) {
@@ -42,7 +44,7 @@ export const createOrUpdateTodo = function (dataAttrs, fieldData) {
   if (dataAttrs.action === "create") {
     targetTodo = createTodo(project);
   } else if (dataAttrs.action === "update") {
-    targetTodo = findTodo("id", dataAttrs.todoId, dataAttrs.projectId);
+    targetTodo = findTodo("id", dataAttrs.todoId);
   }
 
   for (const key in fieldData) {

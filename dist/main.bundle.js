@@ -353,7 +353,7 @@
       var o = n(977),
         r = n(143),
         a = n(880);
-      const c = document.querySelector(".button-open-modal"),
+      const c = document.querySelector(".button-new-todo"),
         s = function () {
           (document.querySelector(".modal__title").textContent = "Add Todo"),
             (document.querySelector(".modal__title-input").value = ""),

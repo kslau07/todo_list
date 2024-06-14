@@ -1,1 +1,75 @@
-<!doctype html><html><head><title>Todo List App</title><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><script defer="defer" src="runtime.bundle.js"></script><script defer="defer" src="main.bundle.js"></script></head><body><h1>TodoList</h1><h3>All Projects</h3><ul class="projects"></ul><div class="backdrop"></div><button class="button-open-modal">Add todo</button><div class="modal"><form onsubmit="return false;"><h2 class="modal__title">Add Todo</h2><p><label for="title">Title: <span aria-label="required">*</span></label> <input id="title" name="title" class="modal__title-input" required/></p><p><label for="description">Description:</label> <input id="description" name="description" class="modal__description-input"/></p><p><label for="project">Project: <span aria-label="required">*</span></label> <select class="modal__projects-select" name="modal__projects-select"></select></p><p class="modal__create-project-container"><label for="modal__create-project-label">New Project Name: <span aria-label="required">*</span></label> <input class="modal__create-project-input"/></p><p class="modal__date"><label>Due Date:</label> <input type="date" class="modal__date-input"/></p><p><label for="priority">Priority:</label> <select id="priority" name="priority" class="modal__priority-select"><option value="high">High</option><option value="medium" selected="selected">Medium</option><option value="low">Low</option></select></p><p>Required fields are followed by <span aria-label="required">*</span>.</p><input type="hidden" class="modal__hidden-input" data-action="create" data-project-id="" data-todo-id=""/><p><input type="submit" value="Save" class="button-save-todo"/> <button class="button-close-modal" type="button">Cancel</button></p></form></div></body></html>
+<!doctype html>
+<html>
+  <head>
+    <title>Todo List App</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script defer="defer" src="runtime.bundle.js"></script>
+    <script defer="defer" src="main.bundle.js"></script>
+  </head>
+  <body>
+    <h1>TodoList</h1>
+    <h3>All Projects</h3>
+    <ul class="projects"></ul>
+    <div class="backdrop"></div>
+    <button class="button-new-todo">Add todo</button>
+    <div class="modal">
+      <form onsubmit="return false;">
+        <h2 class="modal__title">Add Todo</h2>
+        <p>
+          <label for="title">Title: <span aria-label="required">*</span></label>
+          <input id="title" name="title" class="modal__title-input" required />
+        </p>
+        <p>
+          <label for="description">Description:</label>
+          <input
+            id="description"
+            name="description"
+            class="modal__description-input"
+          />
+        </p>
+        <p>
+          <label for="project"
+            >Project: <span aria-label="required">*</span></label
+          >
+          <select
+            class="modal__projects-select"
+            name="modal__projects-select"
+          ></select>
+        </p>
+        <p class="modal__create-project-container">
+          <label for="modal__create-project-label"
+            >New Project Name: <span aria-label="required">*</span></label
+          >
+          <input class="modal__create-project-input" />
+        </p>
+        <p class="modal__date">
+          <label>Due Date:</label>
+          <input type="date" class="modal__date-input" />
+        </p>
+        <p>
+          <label for="priority">Priority:</label>
+          <select id="priority" name="priority" class="modal__priority-select">
+            <option value="high">High</option>
+            <option value="medium" selected="selected">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </p>
+        <p>
+          Required fields are followed by <span aria-label="required">*</span>.
+        </p>
+        <input
+          type="hidden"
+          class="modal__hidden-input"
+          data-action="create"
+          data-project-id=""
+          data-todo-id=""
+        />
+        <p>
+          <input type="submit" value="Save" class="button-save-todo" />
+          <button class="button-close-modal" type="button">Cancel</button>
+        </p>
+      </form>
+    </div>
+  </body>
+</html>
