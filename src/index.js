@@ -11,6 +11,7 @@ import {
   navOpen,
   navClose,
 } from "./nav";
+import LeftArrow from "./assets/left-arrow.svg";
 
 export const localData = {
   projects: [],
@@ -54,6 +55,17 @@ const populateMainTodos = function () {
     todoProjectName.classList.add("todo-card__project-name");
     todoProjectName.textContent = projName;
 
+    const buttonExpand = document.createElement("button");
+    buttonExpand.type = "button";
+    buttonExpand.classList.add("button-expand-todo");
+    // buttonExpand.dataset.projectId = todo.get("projectId");
+    buttonExpand.dataset.todoId = todo.get("id");
+    buttonExpand.addEventListener("click", toggleExpandedSection);
+    const leftArrow = new Image();
+    leftArrow.src = LeftArrow;
+    leftArrow.alt = "A left arrow that expands this todo";
+    buttonExpand.appendChild(leftArrow);
+
     // const dueDateDiv = document.createElement("div");
     // dueDateDiv.classList.add("todo-card__due-date");
 
@@ -62,11 +74,32 @@ const populateMainTodos = function () {
     //   dueDateDiv.textContent = formatDateYmd(dueDate);
     // }
 
+    // Consider extracting to own function
+    const expandedSection = createDivExpandedSection(todo);
+
     todoCard.appendChild(todoTitle);
     // todoCard.appendChild(dueDateDiv);
     todoCard.appendChild(todoProjectName);
+    todoCard.appendChild(buttonExpand);
+    todoCard.appendChild(expandedSection);
     todosList.appendChild(todoCard);
   });
+};
+
+const toggleExpandedSection = function () {
+  const expandedSection = document.querySelector(
+    `#expanded-section-todo-id-${this.dataset.todoId}`,
+  );
+  expandedSection.classList.toggle("show");
+};
+
+const createDivExpandedSection = function (todo) {
+  const div = document.createElement("div");
+  // div.textContent = "[edit] [delete] [more]";
+  div.textContent = `Description: ${todo.get("description")}`;
+  div.classList.add("todo-card__expanded-section");
+  div.id = `expanded-section-todo-id-${todo.get("id")}`;
+  return div;
 };
 
 export const updateMainViewTitle = function () {

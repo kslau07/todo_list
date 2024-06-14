@@ -10,7 +10,7 @@ import {
 } from "./utilities";
 
 const resetForm = function () {
-  document.querySelector(".modal__title").textContent = "Add Todo";
+  document.querySelector(".modal__title").textContent = "New Todo";
   document.querySelector(".modal__title-input").value = "";
   document.querySelector(".modal__description-input").value = "";
   document.querySelector(".modal__date-input").value = "";

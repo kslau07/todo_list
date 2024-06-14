@@ -14,7 +14,7 @@
   <body>
     <header>
       <div class="container border-bottom">
-        <button class="button-nav-open">
+        <button class="button-nav-open" type="button">
           <span class="hamburger"></span>
         </button>
 
@@ -29,7 +29,7 @@
       <div class="container grid-container">
         <nav class="nav">
           <div class="nav__close-button-container">
-            <button class="nav__close-button"></button>
+            <button class="nav__close-button" type="button"></button>
           </div>
           <h3 class="nav__title">View:</h3>
           <ul class="nav__list nav__list--primary"></ul>
@@ -43,10 +43,10 @@
         <div class="main__todos-container">
           <div class="main__todos-head">
             <h3 class="main__title">
-              <span class="main__view-title-type">View: </span>
+              <span class="main__view-title-type">View: </span><br />
               <span class="main__view-title-value">All</span>
             </h3>
-            <button class="button-open-modal">&nbsp;New</button>
+            <button class="button-open-modal" type="button">&nbsp;New</button>
           </div>
           <ul class="main__todos-list"></ul>
           <div class="backdrop"></div>
@@ -54,7 +54,7 @@
 
         <div class="modal">
           <form onsubmit="return false;">
-            <h2 class="modal__title">Add Todo</h2>
+            <h2 class="modal__title">New Todo</h2>
 
             <p>
               <label for="title"
@@ -128,8 +128,8 @@
             />
 
             <p>
-              <input type="submit" value="Save" class="button-save-todo" />
-              <button class="button-close-modal" type="button">Cancel</button>
+              <button type="submit" value="save" class="button-save-todo" />Save</button>
+              <button type="button" class="button-close-modal">Cancel</button>
             </p>
           </form>
         </div>
