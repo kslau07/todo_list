@@ -336,12 +336,16 @@ option[data-action="create-project"] {
   padding: var(--space-xs);
   display: grid;
   grid-template-areas:
-    "card-title      button-expand"
-    "card-body       button-expand";
+    "checkbox      card-title      button-expand"
+    "checkbox             card-body       button-expand";
   /* "todo-project       todo-project"; */
   /* "expanded-section   expanded-section"; */
   /* grid-template-rows: auto auto auto; */
   /* grid-template-columns: auto auto; */
+}
+
+.todo-card__checkbox {
+  grid-area: checkbox;
 }
 
 .todo-card__title {
@@ -366,10 +370,10 @@ option[data-action="create-project"] {
 .button-expanded-section {
   visibility: hidden;
   justify-self: end;
-  align-self: center;
+  align-self: start;
   grid-area: button-expand;
-  height: 40px;
-  width: 40px;
+  height: 34px;
+  width: 34px;
   background-color: var(--color-porcelain);
   border-radius: 50%;
   border: 0;

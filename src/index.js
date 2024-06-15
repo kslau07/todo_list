@@ -2,12 +2,7 @@ import "./global.css";
 import "./style.css";
 import { saveLocalData, loadLocalData, hasStorage } from "./readWrite";
 import { openModal, updateDropdown, saveTodo, closeModal } from "./modal";
-import {
-  createProject,
-  formatDateYmd,
-  findProject,
-  findTodo,
-} from "./utilities";
+import { createProject, findProject, findTodo } from "./utilities";
 import { filterTodos } from "./filters";
 import {
   populateNavTimeframes,
@@ -16,6 +11,8 @@ import {
   navOpen,
   navClose,
 } from "./nav";
+
+import { format, formatDistance } from "date-fns";
 import LeftArrow from "./assets/left-arrow.svg";
 
 export const localData = {
@@ -48,19 +45,26 @@ const populateMainTodos = function () {
     const todoCard = document.createElement("div");
     todoCard.classList.add("todo-card");
 
+    const todoCheckbox = document.createElement("input");
+    todoCheckbox.setAttribute("type", "checkbox");
+    todoCheckbox.classList.add("todo-card__checkbox");
+    todoCheckbox.id = `todo-card__checkbox--todo-id-${todo.get("id")}`;
+
     const todoTitle = document.createElement("div");
     todoTitle.classList.add("todo-card__title");
     todoTitle.textContent = todo.get("title");
     todoTitle.dataset.projectId = projectId;
     todoTitle.dataset.todoId = todoId;
-    todoTitle.addEventListener("click", function () {
-      publisher.publish("open modal", this);
-    });
+    // todoTitle.addEventListener("click", function () {
+    // publisher.publish("open modal", this);
+    // });
 
     const buttonExpand = createButtonExpandedSection(todoId);
     buttonExpand.dataset.projectId = projectId;
 
     const todoBody = createTodoBody(todoId);
+
+    todoCard.appendChild(todoCheckbox);
     todoCard.appendChild(todoTitle);
     // todoCard.appendChild(dueDateDiv);
     todoCard.appendChild(buttonExpand);
@@ -83,20 +87,46 @@ const createTodoBody = function (todoId) {
 const createTodoBodySimple = function (todoId) {
   const targetTodo = findTodo("id", todoId);
   const targetProject = findProject("id", targetTodo.get("projectId"));
-  const div = document.createElement("div");
-  div.id = `todo-card__body-simple--todo-id-${todoId}`;
-  div.classList.add("todo-card__body-simple");
-  div.textContent = targetProject.name;
-  div.classList.add("show");
-  return div;
+  const divSimple = document.createElement("div");
+  divSimple.id = `todo-card__body-simple--todo-id-${todoId}`;
+  divSimple.classList.add("todo-card__body-simple");
+  divSimple.textContent = targetProject.name;
+  divSimple.classList.add("show");
+  return divSimple;
 };
 
 const createTodoBodyExpanded = function (todoId) {
-  const div = document.createElement("div");
-  div.id = `todo-card__body-expanded--todo-id-${todoId}`;
-  div.classList.add("todo-card__body-expanded");
-  div.textContent = "expanded here";
-  return div;
+  const targetTodo = findTodo("id", todoId);
+  const targetProject = findProject("id", targetTodo.get("projectId"));
+  const divExpanded = document.createElement("div");
+  divExpanded.id = `todo-card__body-expanded--todo-id-${todoId}`;
+  divExpanded.classList.add("todo-card__body-expanded");
+
+  // Project
+  const divProject = document.createElement("div");
+  divProject.textContent = `Project: ${targetProject.name}`;
+
+  // Due Date
+  const divDueDate = document.createElement("div");
+  let dueDate = "";
+  if (targetTodo.get("dueDate")) {
+    dueDate = format(targetTodo.get("dueDate"), "MM-dd-yyyy");
+  }
+  divDueDate.textContent = `Due Date: ${dueDate}`;
+
+  // Description
+  const divDescription = document.createElement("div");
+  divDescription.textContent = `Description: ${targetTodo.get("description")}`;
+
+  // Priority
+  const divPriority = document.createElement("div");
+  divPriority.textContent = `Priority: ${targetTodo.get("priority")}`;
+
+  divExpanded.appendChild(divProject);
+  divExpanded.appendChild(divDueDate);
+  divExpanded.appendChild(divDescription);
+  divExpanded.appendChild(divPriority);
+  return divExpanded;
 };
 
 const toggleExpandedSection = function () {

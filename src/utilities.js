@@ -65,10 +65,23 @@ export const createOrUpdateTodo = function (dataAttrs, fieldData) {
   return targetTodo;
 };
 
-export const formatDateYmd = function (dateObject) {
-  const year = dateObject.getFullYear();
-  const month = ("0" + (dateObject.getMonth() + 1)).slice(-2); // month is zero-indexed, also pad zero
-  const day = ("0" + dateObject.getDate()).slice(-2);
+// Delete me
+// export const formatDateYmd = function (dateObject) {
+//   if (!dateObject) return;
 
-  return [year, month, day].join("-");
-};
+//   const year = dateObject.getFullYear();
+//   const month = ("0" + (dateObject.getMonth() + 1)).slice(-2); // month is zero-indexed, also pad zero
+//   const day = ("0" + dateObject.getDate()).slice(-2);
+
+//   return [year, month, day].join("-");
+// };
+
+// export const formatDateMdy = function (dateObject) {
+//   if (!dateObject) return;
+
+//   const month = ("0" + (dateObject.getMonth() + 1)).slice(-2); // month is zero-indexed, also pad zero
+//   const day = ("0" + dateObject.getDate()).slice(-2);
+//   const year = dateObject.getFullYear();
+
+//   return [month, day, year].join("-");
+// };

@@ -6,8 +6,8 @@ import {
   findProject,
   findTodo,
   createOrUpdateTodo,
-  formatDateYmd,
 } from "./utilities";
+import { format } from "date-fns";
 
 const resetForm = function () {
   document.querySelector(".modal__title").textContent = "New Todo";
@@ -171,7 +171,9 @@ const editExistingTodo = function (projectId, todoId) {
   const dateInput = document.querySelector(".modal__date-input");
   const todoDueDate = todo.get("dueDate");
   if (todoDueDate) {
-    dateInput.value = formatDateYmd(todoDueDate);
+    dateInput.value = format(todoDueDate, "yyyy-MM-dd");
+    // dueDate = format(targetTodo.get("dueDate"), "MM-dd-yyyy");
+    // dateInput.value = formatDateYmd(todoDueDate);
   }
 
   const hiddenInput = document.querySelector(".modal__hidden-input");
