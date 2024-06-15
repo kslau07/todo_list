@@ -14,8 +14,6 @@ body {
 header {
   position: relative;
   text-align: center;
-  /* padding-bottom: 2em; */
-  /* border: 3px solid green; */
 }
 
 .logo {
@@ -320,11 +318,8 @@ option[data-action="create-project"] {
 }
 
 .main__todos-list {
-  /* border: 3px solid #00f; */
   padding: 0;
   display: grid;
-  /* grid-auto-flow: row; */
-  /* grid-auto-rows: 150px; */
   gap: var(--space-xs);
   padding: 0 var(--space-sm) var(--space-md);
   filter: var(--drop-shadow-md);
@@ -336,22 +331,19 @@ option[data-action="create-project"] {
   padding: var(--space-xs);
   display: grid;
   grid-template-areas:
-    "checkbox      card-title      button-expand"
-    "checkbox             card-body       button-expand";
-
-  /* "todo-project       todo-project"; */
-  /* "expanded-section   expanded-section"; */
-  /* grid-template-rows: auto auto auto; */
+    "checkbox         card-title      button-expand"
+    "checkbox         card-body       button-expand";
   grid-template-columns: auto 1fr auto;
   gap: 0 var(--space-md);
 }
 
+.todo-card.checked {
+  background-color: var(--color-lightgray);
+}
+
 .todo-card__checkbox {
   grid-area: checkbox;
-  /* align-self: start; */
   width: 20px;
-  /* height: 20px; */
-  /* margin: 3px 20px 0 0; */
 }
 
 .todo-card__title {
@@ -373,8 +365,38 @@ option[data-action="create-project"] {
   display: block;
 }
 
+.todo-card__body-simple {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  /* font-size: var(--text-sm); */
+  color: var(--color-gray);
+}
+.todo-card__body-expanded {
+  margin: var(--space-sm) 0 0 0;
+  border-top: 1px solid var(--color-gray);
+  line-height: 1.75rem;
+  /* padding: var(--space-xs) 0 0 0; */
+  /* padding: 0 0 0 var(--space-sm); */
+  font-size: var(--text-sm);
+}
+
+.todo-card__project-label,
+.todo-card__due-date-label,
+.todo-card__description-label,
+.todo-card__priority-label {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 700;
+}
+
+.todo-card__project-name,
+.todo-card__due-date-date,
+.todo-card__description-body,
+.todo-card__priority-body {
+  color: var(--color-darkgray);
+  /* background-color: blue; */
+}
+
 .button-expanded-section {
-  visibility: hidden;
+  opacity: 0.4;
   justify-self: end;
   align-self: start;
   grid-area: button-expand;
@@ -396,7 +418,7 @@ option[data-action="create-project"] {
 }
 
 .todo-card:hover .button-expanded-section {
-  visibility: visible;
+  opacity: 1;
 }
 
 .button-expanded-section:hover {
@@ -404,7 +426,7 @@ option[data-action="create-project"] {
 }
 
 .button-expanded-section.show {
-  visibility: visible;
+  opacity: 1;
   transform: rotate(-90deg);
 }
 
@@ -447,9 +469,6 @@ option[data-action="create-project"] {
   }
 
   .grid-container {
-    /* display: grid; */
-    /* grid-template-areas: "nav main"; */
-    /* grid-auto-flow: column; */
     grid-template-columns: 33% 67%;
   }
 }

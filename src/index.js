@@ -43,8 +43,9 @@ const populateMainTodos = function () {
     const projectId = todo.get("projectId");
     const todoCard = document.createElement("div");
     todoCard.classList.add("todo-card");
+    todoCard.id = `todo-card--todo-id-${todo.get("id")}`;
 
-    const todoCheckbox = createTodoCheckbox(todo);
+    const todoCheckbox = createTodoCheckbox(todo, todoCard);
 
     const todoTitle = document.createElement("div");
     todoTitle.classList.add("todo-card__title");
@@ -52,7 +53,7 @@ const populateMainTodos = function () {
     todoTitle.dataset.projectId = projectId;
     todoTitle.dataset.todoId = todoId;
     todoTitle.addEventListener("click", function () {
-      todoCheckbox.checked = todoCheckbox.checked ? false : true;
+      toggleExpandedSection.apply(todoTitle);
     });
     // todoTitle.addEventListener("click", function () {
     // publisher.publish("open modal", this);
@@ -72,12 +73,15 @@ const populateMainTodos = function () {
   });
 };
 
-const createTodoCheckbox = function (todo) {
+const createTodoCheckbox = function (todo, todoCard) {
   const todoCheckbox = document.createElement("input");
   todoCheckbox.setAttribute("type", "checkbox");
   todoCheckbox.classList.add("todo-card__checkbox");
   todoCheckbox.id = `todo-card__checkbox--todo-id-${todo.get("id")}`;
   todoCheckbox.checked = todo.get("checked");
+  if (todo.get("checked")) {
+    todoCard.classList.add("checked");
+  }
   todoCheckbox.addEventListener("click", () =>
     publisher.publish("checkbox clicked", {
       targetElement: todoCheckbox,
@@ -88,8 +92,20 @@ const createTodoCheckbox = function (todo) {
 };
 
 const checkboxClicked = function ({ targetElement, targetTodo }) {
-  const checkStatus = targetElement.checked;
-  targetTodo.set("checked", checkStatus);
+  const isChecked = targetElement.checked;
+  targetTodo.set("checked", isChecked);
+
+  if (isChecked) {
+    const todoCard = document.getElementById(
+      `todo-card--todo-id-${targetTodo.get("id")}`,
+    );
+    todoCard.classList.add("checked");
+  } else {
+    const todoCard = document.getElementById(
+      `todo-card--todo-id-${targetTodo.get("id")}`,
+    );
+    todoCard.classList.remove("checked");
+  }
 };
 
 const createTodoBody = function (todoId) {
@@ -123,7 +139,14 @@ const createTodoBodyExpanded = function (todoId) {
 
   // Project
   const divProject = document.createElement("div");
-  divProject.textContent = `Project: ${targetProject.name}`;
+  const projLabel = document.createElement("span");
+  projLabel.classList.add("todo-card__project-label");
+  projLabel.textContent = "Project: ";
+  const projName = document.createElement("span");
+  projName.classList.add("todo-card__project-name");
+  projName.textContent = targetProject.name;
+  divProject.appendChild(projLabel);
+  divProject.appendChild(projName);
 
   // Due Date
   const divDueDate = document.createElement("div");
@@ -131,15 +154,37 @@ const createTodoBodyExpanded = function (todoId) {
   if (targetTodo.get("dueDate")) {
     dueDate = format(targetTodo.get("dueDate"), "MM-dd-yyyy");
   }
-  divDueDate.textContent = `Due Date: ${dueDate}`;
+  const dueDateLabel = document.createElement("span");
+  dueDateLabel.classList.add("todo-card__due-date-label");
+  dueDateLabel.textContent = "Due date: ";
+  const dueDateDate = document.createElement("span");
+  dueDateDate.classList.add("todo-card__due-date-date");
+  dueDateDate.textContent = dueDate;
+  divDueDate.appendChild(dueDateLabel);
+  divDueDate.appendChild(dueDateDate);
 
   // Description
   const divDescription = document.createElement("div");
-  divDescription.textContent = `Description: ${targetTodo.get("description")}`;
+  const descLabel = document.createElement("span");
+  descLabel.classList.add("todo-card__description-label");
+  descLabel.textContent = "Description: ";
+  const descBody = document.createElement("span");
+  descBody.classList.add("todo-card__description-body");
+  descBody.textContent = targetTodo.get("description");
+  divDescription.appendChild(descLabel);
+  divDescription.appendChild(descBody);
 
   // Priority
   const divPriority = document.createElement("div");
-  divPriority.textContent = `Priority: ${targetTodo.get("priority")}`;
+  // divPriority.textContent = `Priority: ${targetTodo.get("priority")}`;
+  const priorityLabel = document.createElement("span");
+  priorityLabel.classList.add("todo-card__priority-label");
+  priorityLabel.textContent = "Priority: ";
+  const priorityBody = document.createElement("span");
+  priorityBody.classList.add("todo-card__priority-body");
+  priorityBody.textContent = targetTodo.get("priority");
+  divPriority.appendChild(priorityLabel);
+  divPriority.appendChild(priorityBody);
 
   // Add "Edit", "Delete", "Add Note", and "Add checklist item"
 
