@@ -338,14 +338,20 @@ option[data-action="create-project"] {
   grid-template-areas:
     "checkbox      card-title      button-expand"
     "checkbox             card-body       button-expand";
+
   /* "todo-project       todo-project"; */
   /* "expanded-section   expanded-section"; */
   /* grid-template-rows: auto auto auto; */
-  /* grid-template-columns: auto auto; */
+  grid-template-columns: auto 1fr auto;
+  gap: 0 var(--space-md);
 }
 
 .todo-card__checkbox {
   grid-area: checkbox;
+  /* align-self: start; */
+  width: 20px;
+  /* height: 20px; */
+  /* margin: 3px 20px 0 0; */
 }
 
 .todo-card__title {

@@ -32,9 +32,17 @@ export const findTodo = function (key, value) {
 const createTodo = function (project) {
   const newTodo = new Map();
   newTodo.set("dataType", "todo");
+  newTodo.set("checked", false);
   newTodo.set("id", nextId("todo"));
   project.todos.push(newTodo);
   return newTodo;
+};
+
+export const deleteTodo = function (todoId) {
+  const todo = findTodo("id", todoId);
+  const project = findProject("id", todo.get("projectId"));
+  const idx = project.todos.findIndex((todo) => todo.get("id") == todoId);
+  project.todos.splice(idx, 1);
 };
 
 export const createOrUpdateTodo = function (dataAttrs, fieldData) {

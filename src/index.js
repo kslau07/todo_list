@@ -2,7 +2,7 @@ import "./global.css";
 import "./style.css";
 import { saveLocalData, loadLocalData, hasStorage } from "./readWrite";
 import { openModal, updateDropdown, saveTodo, closeModal } from "./modal";
-import { createProject, findProject, findTodo } from "./utilities";
+import { createProject, findProject, findTodo, deleteTodo } from "./utilities";
 import { filterTodos } from "./filters";
 import {
   populateNavTimeframes,
@@ -11,7 +11,6 @@ import {
   navOpen,
   navClose,
 } from "./nav";
-
 import { format, formatDistance } from "date-fns";
 import LeftArrow from "./assets/left-arrow.svg";
 
@@ -45,16 +44,16 @@ const populateMainTodos = function () {
     const todoCard = document.createElement("div");
     todoCard.classList.add("todo-card");
 
-    const todoCheckbox = document.createElement("input");
-    todoCheckbox.setAttribute("type", "checkbox");
-    todoCheckbox.classList.add("todo-card__checkbox");
-    todoCheckbox.id = `todo-card__checkbox--todo-id-${todo.get("id")}`;
+    const todoCheckbox = createTodoCheckbox(todo);
 
     const todoTitle = document.createElement("div");
     todoTitle.classList.add("todo-card__title");
     todoTitle.textContent = todo.get("title");
     todoTitle.dataset.projectId = projectId;
     todoTitle.dataset.todoId = todoId;
+    todoTitle.addEventListener("click", function () {
+      todoCheckbox.checked = todoCheckbox.checked ? false : true;
+    });
     // todoTitle.addEventListener("click", function () {
     // publisher.publish("open modal", this);
     // });
@@ -71,6 +70,26 @@ const populateMainTodos = function () {
     todoCard.appendChild(todoBody);
     todosList.appendChild(todoCard);
   });
+};
+
+const createTodoCheckbox = function (todo) {
+  const todoCheckbox = document.createElement("input");
+  todoCheckbox.setAttribute("type", "checkbox");
+  todoCheckbox.classList.add("todo-card__checkbox");
+  todoCheckbox.id = `todo-card__checkbox--todo-id-${todo.get("id")}`;
+  todoCheckbox.checked = todo.get("checked");
+  todoCheckbox.addEventListener("click", () =>
+    publisher.publish("checkbox clicked", {
+      targetElement: todoCheckbox,
+      targetTodo: todo,
+    }),
+  );
+  return todoCheckbox;
+};
+
+const checkboxClicked = function ({ targetElement, targetTodo }) {
+  const checkStatus = targetElement.checked;
+  targetTodo.set("checked", checkStatus);
 };
 
 const createTodoBody = function (todoId) {
@@ -122,10 +141,15 @@ const createTodoBodyExpanded = function (todoId) {
   const divPriority = document.createElement("div");
   divPriority.textContent = `Priority: ${targetTodo.get("priority")}`;
 
+  // Add "Edit", "Delete", "Add Note", and "Add checklist item"
+
+  const divExtraTodoButtons = createDivExtraTodoButtons(todoId);
+
   divExpanded.appendChild(divProject);
   divExpanded.appendChild(divDueDate);
   divExpanded.appendChild(divDescription);
   divExpanded.appendChild(divPriority);
+  divExpanded.appendChild(divExtraTodoButtons);
   return divExpanded;
 };
 
@@ -159,6 +183,31 @@ const createButtonExpandedSection = function (todoId) {
   button.appendChild(leftArrow);
 
   return button;
+};
+
+const createDivExtraTodoButtons = function (todoId) {
+  const divTodoButtons = document.createElement("div");
+  const button1 = document.createElement("button");
+  button1.textContent = "Edit";
+  button1.addEventListener("click", function () {
+    publisher.publish("open modal", todoId);
+  });
+  const button2 = document.createElement("button");
+  button2.textContent = "Delete";
+  button2.addEventListener("click", function () {
+    publisher.publish("delete todo", todoId);
+  });
+
+  const button3 = document.createElement("button");
+  button3.textContent = "Add Note";
+  const button4 = document.createElement("button");
+  button4.textContent = "Add Checklist Item";
+
+  divTodoButtons.appendChild(button1);
+  divTodoButtons.appendChild(button2);
+  divTodoButtons.appendChild(button3);
+  divTodoButtons.appendChild(button4);
+  return divTodoButtons;
 };
 
 export const updateMainViewTitle = function () {
@@ -220,9 +269,15 @@ broker.subscribe("save todo", saveTodo);
 broker.subscribe("save todo", closeModal);
 broker.subscribe("save todo", saveLocalData);
 
-broker.subscribe("change view", changeView); // fix this
+broker.subscribe("delete todo", deleteTodo);
+broker.subscribe("delete todo", saveLocalData);
+
+broker.subscribe("change view", changeView);
 broker.subscribe("change view", navClose);
 broker.subscribe("change view", saveLocalData);
+
+broker.subscribe("checkbox clicked", checkboxClicked);
+broker.subscribe("checkbox clicked", saveLocalData);
 
 // Publish events
 document
@@ -236,7 +291,7 @@ document
 document
   .querySelector(".button-new-todo")
   .addEventListener("click", function () {
-    publisher.publish("open modal", this);
+    publisher.publish("open modal");
   });
 // Publish event for first load
 publisher.publish("start up");

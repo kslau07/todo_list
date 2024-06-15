@@ -36,14 +36,16 @@ const resetForm = function () {
   dropdown.disabled = false;
 };
 
-export const openModal = function (targetElem) {
+export const openModal = function (todoId) {
+  console.log("delete me");
+  console.log(localData);
   const modal = document.querySelector(".modal");
   const backdrop = document.querySelector(".backdrop");
   modal.classList.add("show");
   backdrop.classList.add("show");
 
-  if (targetElem.dataset.projectId) {
-    editExistingTodo(targetElem.dataset.projectId, targetElem.dataset.todoId);
+  if (todoId) {
+    editExistingTodo(todoId);
   }
 };
 
@@ -146,9 +148,9 @@ export const saveTodo = function () {
   }
 };
 
-const editExistingTodo = function (projectId, todoId) {
-  const project = findProject("id", projectId);
+const editExistingTodo = function (todoId) {
   const todo = findTodo("id", todoId);
+  const project = findProject("id", todo.get("projectId"));
   // const todo = findTodo("id", todoId, projectId);
   const modalTitle = document.querySelector(".modal__title");
   modalTitle.textContent = "Update Todo";
@@ -158,7 +160,7 @@ const editExistingTodo = function (projectId, todoId) {
   inputDescription.value = todo.get("description");
   const dropdownProjects = document.querySelector(".modal__projects-select");
   const projIndex = localData.projects.findIndex(
-    (project) => project.id === Number(projectId),
+    (proj) => proj.id === project.id,
   );
   dropdownProjects.selectedIndex = projIndex;
   dropdownProjects.disabled = true;
@@ -178,6 +180,6 @@ const editExistingTodo = function (projectId, todoId) {
 
   const hiddenInput = document.querySelector(".modal__hidden-input");
   hiddenInput.dataset.action = "update";
-  hiddenInput.dataset.projectId = findProject("id", projectId).id;
+  hiddenInput.dataset.projectId = project.id;
   hiddenInput.dataset.todoId = todo.get("id");
 };
