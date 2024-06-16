@@ -362,21 +362,53 @@ option[data-action="create-project"] {
 
 .todo-card__body-simple.show,
 .todo-card__body-expanded.show {
-  display: block;
+  display: grid;
 }
 
 .todo-card__body-simple {
   font-family: "Barlow Semi Condensed", sans-serif;
-  /* font-size: var(--text-sm); */
   color: var(--color-gray);
 }
+
 .todo-card__body-expanded {
+  grid-template-areas:
+    "project-label       project-name"
+    "due-date-label      due-date-date"
+    "description-label   description-body"
+    "priority-label      priority-body"
+    "extra-buttons       extra-buttons";
+  grid-template-columns: auto 1fr;
+  gap: var(--space-md);
   margin: var(--space-sm) 0 0 0;
+  padding: var(--space-sm) 0 0 0;
   border-top: 1px solid var(--color-gray);
-  line-height: 1.75rem;
-  /* padding: var(--space-xs) 0 0 0; */
-  /* padding: 0 0 0 var(--space-sm); */
+  line-height: 1rem;
   font-size: var(--text-sm);
+}
+
+.todo-card__project-label {
+  grid-area: project-label;
+}
+.todo-card__project-name {
+  grid-area: project-name;
+}
+.todo-card__due-date-label {
+  grid-area: due-date-label;
+}
+.todo-card__due-date-date {
+  grid-area: due-date-date;
+}
+.todo-card__description-label {
+  grid-area: description-label;
+}
+.todo-card__description-body {
+  grid-area: description-body;
+}
+.todo-card__priority-label {
+  grid-area: priority-label;
+}
+.todo-card__priority-body {
+  grid-area: priority-body;
 }
 
 .todo-card__project-label,
@@ -392,7 +424,44 @@ option[data-action="create-project"] {
 .todo-card__description-body,
 .todo-card__priority-body {
   color: var(--color-darkgray);
-  /* background-color: blue; */
+}
+
+.todo-card__extra-buttons {
+  grid-area: extra-buttons;
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--space-xs);
+}
+
+.todo-card__extra-button {
+  /* background-color: #262626; */
+  /* background-color: #525252; */
+  /* background-color: #737373; */
+  font-weight: 600;
+  border: 0;
+  border-radius: 3px;
+  padding: 0.375em 1em;
+  color: white;
+  cursor: pointer;
+}
+
+.todo-card__extra-button:hover {
+  opacity: 0.8;
+}
+
+.todo-card__extra-button--edit {
+  /* background-color: #f00; */
+  background-color: #60a5fa;
+}
+
+.todo-card__extra-button--delete {
+  background-color: #f87171;
+}
+
+.todo-card__extra-button--add-note,
+.todo-card__extra-button--add-checklist-item {
+  /* background-color: #f00; */
+  background-color: #4ade80;
 }
 
 .button-expanded-section {

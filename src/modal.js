@@ -37,8 +37,17 @@ const resetForm = function () {
 };
 
 export const openModal = function (todoId) {
-  console.log("delete me");
-  console.log(localData);
+  // Select corresponding project if user has chosen to view by project
+  if (localData.config.lastViewConstraint === "project") {
+    const projName = localData.config.lastViewValue;
+    const project = findProject("name", projName);
+    const projIndex = localData.projects.findIndex(
+      (proj) => proj.id === project.id,
+    );
+    const dropdownProjects = document.querySelector(".modal__projects-select");
+    dropdownProjects.selectedIndex = projIndex;
+  }
+
   const modal = document.querySelector(".modal");
   const backdrop = document.querySelector(".backdrop");
   modal.classList.add("show");
@@ -151,7 +160,6 @@ export const saveTodo = function () {
 const editExistingTodo = function (todoId) {
   const todo = findTodo("id", todoId);
   const project = findProject("id", todo.get("projectId"));
-  // const todo = findTodo("id", todoId, projectId);
   const modalTitle = document.querySelector(".modal__title");
   modalTitle.textContent = "Update Todo";
   const inputTitle = document.querySelector(".modal__title-input");

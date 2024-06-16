@@ -38,6 +38,10 @@ const populateMainTodos = function () {
   const todosList = document.querySelector(".main__todos-list");
   todosList.innerHTML = "";
 
+  if (filteredTodos.length === 0) {
+    todosList.textContent = "No todos to show.";
+  }
+
   filteredTodos.forEach((todo) => {
     const todoId = todo.get("id");
     const projectId = todo.get("projectId");
@@ -138,62 +142,50 @@ const createTodoBodyExpanded = function (todoId) {
   divExpanded.classList.add("todo-card__body-expanded");
 
   // Project
-  const divProject = document.createElement("div");
-  const projLabel = document.createElement("span");
+  const projLabel = document.createElement("div");
   projLabel.classList.add("todo-card__project-label");
   projLabel.textContent = "Project: ";
-  const projName = document.createElement("span");
+  const projName = document.createElement("div");
   projName.classList.add("todo-card__project-name");
   projName.textContent = targetProject.name;
-  divProject.appendChild(projLabel);
-  divProject.appendChild(projName);
+  divExpanded.appendChild(projLabel);
+  divExpanded.appendChild(projName);
 
   // Due Date
-  const divDueDate = document.createElement("div");
   let dueDate = "";
   if (targetTodo.get("dueDate")) {
     dueDate = format(targetTodo.get("dueDate"), "MM-dd-yyyy");
   }
-  const dueDateLabel = document.createElement("span");
+  const dueDateLabel = document.createElement("div");
   dueDateLabel.classList.add("todo-card__due-date-label");
   dueDateLabel.textContent = "Due date: ";
-  const dueDateDate = document.createElement("span");
+  const dueDateDate = document.createElement("div");
   dueDateDate.classList.add("todo-card__due-date-date");
   dueDateDate.textContent = dueDate;
-  divDueDate.appendChild(dueDateLabel);
-  divDueDate.appendChild(dueDateDate);
+  divExpanded.appendChild(dueDateLabel);
+  divExpanded.appendChild(dueDateDate);
 
   // Description
-  const divDescription = document.createElement("div");
-  const descLabel = document.createElement("span");
+  const descLabel = document.createElement("div");
   descLabel.classList.add("todo-card__description-label");
   descLabel.textContent = "Description: ";
-  const descBody = document.createElement("span");
+  const descBody = document.createElement("div");
   descBody.classList.add("todo-card__description-body");
   descBody.textContent = targetTodo.get("description");
-  divDescription.appendChild(descLabel);
-  divDescription.appendChild(descBody);
+  divExpanded.appendChild(descLabel);
+  divExpanded.appendChild(descBody);
 
   // Priority
-  const divPriority = document.createElement("div");
-  // divPriority.textContent = `Priority: ${targetTodo.get("priority")}`;
-  const priorityLabel = document.createElement("span");
+  const priorityLabel = document.createElement("div");
   priorityLabel.classList.add("todo-card__priority-label");
   priorityLabel.textContent = "Priority: ";
-  const priorityBody = document.createElement("span");
+  const priorityBody = document.createElement("div");
   priorityBody.classList.add("todo-card__priority-body");
   priorityBody.textContent = targetTodo.get("priority");
-  divPriority.appendChild(priorityLabel);
-  divPriority.appendChild(priorityBody);
+  divExpanded.appendChild(priorityLabel);
+  divExpanded.appendChild(priorityBody);
 
-  // Add "Edit", "Delete", "Add Note", and "Add checklist item"
-
-  const divExtraTodoButtons = createDivExtraTodoButtons(todoId);
-
-  divExpanded.appendChild(divProject);
-  divExpanded.appendChild(divDueDate);
-  divExpanded.appendChild(divDescription);
-  divExpanded.appendChild(divPriority);
+  const divExtraTodoButtons = createDivExtraButtons(todoId);
   divExpanded.appendChild(divExtraTodoButtons);
   return divExpanded;
 };
@@ -230,23 +222,41 @@ const createButtonExpandedSection = function (todoId) {
   return button;
 };
 
-const createDivExtraTodoButtons = function (todoId) {
+const createDivExtraButtons = function (todoId) {
   const divTodoButtons = document.createElement("div");
+  divTodoButtons.classList.add("todo-card__extra-buttons");
   const button1 = document.createElement("button");
-  button1.textContent = "Edit";
+  button1.classList.add(
+    "todo-card__extra-button",
+    "todo-card__extra-button--edit",
+  );
+  button1.textContent = "🖉 Edit";
   button1.addEventListener("click", function () {
     publisher.publish("open modal", todoId);
   });
   const button2 = document.createElement("button");
-  button2.textContent = "Delete";
+  button2.classList.add(
+    "todo-card__extra-button",
+    "todo-card__extra-button--delete",
+  );
+  button2.textContent = "🗑 Delete";
   button2.addEventListener("click", function () {
     publisher.publish("delete todo", todoId);
   });
 
   const button3 = document.createElement("button");
-  button3.textContent = "Add Note";
+  button3.classList.add(
+    "todo-card__extra-button",
+    "todo-card__extra-button--add-note",
+  );
+  button3.textContent = "+ Note";
+
   const button4 = document.createElement("button");
-  button4.textContent = "Add Checklist Item";
+  button4.classList.add(
+    "todo-card__extra-button",
+    "todo-card__extra-button--add-checklist-item",
+  );
+  button4.textContent = "+ Checklist Item";
 
   divTodoButtons.appendChild(button1);
   divTodoButtons.appendChild(button2);
