@@ -12,6 +12,10 @@ import {
   navClose,
 } from "./nav";
 import { format, formatDistance } from "date-fns";
+import All from "./assets/all.svg";
+import Calendar from "./assets/calendar.svg";
+import Star from "./assets/star.svg";
+import Project from "./assets/project.svg";
 import LeftArrow from "./assets/left-arrow.svg";
 
 export const localData = {
@@ -51,17 +55,23 @@ const populateMainTodos = function () {
 
     const todoCheckbox = createTodoCheckbox(todo, todoCard);
 
-    const todoTitle = document.createElement("div");
-    todoTitle.classList.add("todo-card__title");
-    todoTitle.textContent = todo.get("title");
-    todoTitle.dataset.projectId = projectId;
-    todoTitle.dataset.todoId = todoId;
-    todoTitle.addEventListener("click", function () {
-      toggleExpandedSection.apply(todoTitle);
+    const divTodoTitle = document.createElement("div");
+    const spanTodoTitle = document.createElement("span");
+    spanTodoTitle.classList.add("todo-card__title");
+    spanTodoTitle.textContent = todo.get("title");
+    spanTodoTitle.dataset.projectId = projectId;
+    spanTodoTitle.dataset.todoId = todoId;
+    spanTodoTitle.addEventListener("click", function () {
+      toggleExpandedSection.apply(spanTodoTitle);
     });
-    // todoTitle.addEventListener("click", function () {
-    // publisher.publish("open modal", this);
-    // });
+    divTodoTitle.appendChild(spanTodoTitle);
+
+    if (todo.get("priority") === "high") {
+      const spanPriorityHigh = document.createElement("span");
+      spanPriorityHigh.classList.add("todo-card__priority-flag");
+      spanPriorityHigh.textContent = " ⚑";
+      divTodoTitle.appendChild(spanPriorityHigh);
+    }
 
     const buttonExpand = createButtonExpandedSection(todoId);
     buttonExpand.dataset.projectId = projectId;
@@ -69,8 +79,7 @@ const populateMainTodos = function () {
     const todoBody = createTodoBody(todoId);
 
     todoCard.appendChild(todoCheckbox);
-    todoCard.appendChild(todoTitle);
-    // todoCard.appendChild(dueDateDiv);
+    todoCard.appendChild(divTodoTitle);
     todoCard.appendChild(buttonExpand);
     todoCard.appendChild(todoBody);
     todosList.appendChild(todoCard);
@@ -267,7 +276,7 @@ const createDivExtraButtons = function (todoId) {
 
 export const updateMainViewTitle = function () {
   const { lastViewConstraint, lastViewValue } = localData.config;
-  const mainViewType = document.querySelector(".main__view-title-type");
+  const mainViewType = document.querySelector(".main__view-title-label");
   const mainViewValue = document.querySelector(".main__view-title-value");
   mainViewValue.textContent = lastViewValue;
 
@@ -280,6 +289,40 @@ export const updateMainViewTitle = function () {
     mainViewValue.classList.add("main__view-title-by-project");
     mainViewValue.classList.remove("main__view-title-by-timeframe");
   }
+
+  updateViewIcon();
+};
+
+const updateViewIcon = function () {
+  const { lastViewConstraint, lastViewValue } = localData.config;
+  const viewTitleIcon = document.querySelector(".main__view-title-icon");
+  viewTitleIcon.textContent = "";
+
+  let icon;
+
+  switch (lastViewValue) {
+    case "all":
+      icon = new Image();
+      icon.src = All;
+      icon.alt = "An icon of a series of lines which represents all todos.";
+      break;
+    case "today":
+      icon = new Image();
+      icon.src = Star;
+      icon.alt = "An icon of a star which represents today's todos.";
+      break;
+    case "upcoming":
+      icon = new Image();
+      icon.src = Calendar;
+      icon.alt = "An icon of a calendar which represents upcoming todos.";
+      break;
+    default:
+      icon = new Image();
+      icon.src = Project;
+      icon.alt = "An icon which represents a project.";
+  }
+
+  viewTitleIcon.appendChild(icon);
 };
 
 export const refreshUI = function () {

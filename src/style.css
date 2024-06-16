@@ -86,9 +86,7 @@ header {
 }
 
 .nav {
-  /* border: 3px solid purple; */
   grid-area: nav;
-
   padding: var(--space-xs);
   position: absolute;
   inset: 0;
@@ -309,12 +307,42 @@ option[data-action="create-project"] {
   content: "+";
 }
 
+.main__title {
+  display: grid;
+  grid-template-areas:
+    "view-title-label   view-title-label"
+    "view-title-icon    view-title-value";
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0 var(--space-xs);
+}
+
+.main__view-title-label {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  grid-area: view-title-label;
+}
+
+.main__view-title-value {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  grid-area: view-title-value;
+}
+
 .main__view-title-by-timeframe {
   color: var(--color-accent2-alt);
+  text-transform: uppercase;
 }
 
 .main__view-title-by-project {
   color: var(--color-accent1-alt);
+}
+
+.main__view-title-icon {
+  grid-area: view-title-icon;
+  display: inline-block;
+  height: 25px;
+  width: 25px;
 }
 
 .main__todos-list {
@@ -351,6 +379,10 @@ option[data-action="create-project"] {
   color: var(--color-black);
 }
 
+.todo-card__priority-flag {
+  color: red;
+}
+
 .todo-card__body-container {
   grid-area: card-body;
 }
@@ -379,7 +411,8 @@ option[data-action="create-project"] {
     "extra-buttons       extra-buttons";
   grid-template-columns: auto 1fr;
   gap: var(--space-md);
-  margin: var(--space-sm) 0 0 0;
+  /* margin: var(--space-xxs) 0 0 0; */
+  margin: 0;
   padding: var(--space-sm) 0 0 0;
   border-top: 1px solid var(--color-gray);
   line-height: 1rem;
@@ -434,9 +467,6 @@ option[data-action="create-project"] {
 }
 
 .todo-card__extra-button {
-  /* background-color: #262626; */
-  /* background-color: #525252; */
-  /* background-color: #737373; */
   font-weight: 600;
   border: 0;
   border-radius: 3px;

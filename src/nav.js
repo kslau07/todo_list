@@ -81,8 +81,6 @@ const changeViewTimeframe = function () {
   localData.config.lastViewConstraint = constraint;
   localData.config.lastViewValue = selectedView.toLowerCase();
   updateMainViewTitle(constraint, selectedView);
-  // toggleShow();
-  // saveLocalData();
 };
 
 const changeViewProject = function () {
@@ -91,12 +89,9 @@ const changeViewProject = function () {
   localData.config.lastViewConstraint = constraint;
   localData.config.lastViewValue = selectedProjectName;
   updateMainViewTitle(constraint, selectedProjectName);
-  // toggleShow();
-  // saveLocalData();
 };
 
 export const changeView = function ({ constraint, value }) {
   localData.config.lastViewConstraint = constraint;
   localData.config.lastViewValue = value;
-  updateMainViewTitle();
 };
