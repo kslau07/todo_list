@@ -25,8 +25,6 @@ const nextId = function (dataType) {
 export const findTodo = function (key, value) {
   const todos = allTodos();
   return todos.find((todo) => todo.get(key) == value);
-  // const project = findProject("id", projectId);
-  // return project.todos.find((todo) => todo.get(key) == value);
 };
 
 const createTodo = function (project) {
@@ -70,26 +68,31 @@ export const createOrUpdateTodo = function (dataAttrs, fieldData) {
     targetTodo.set(key, value);
   }
 
+  localData.config.lastUnsortedProjectId = project.id;
+  project.sorted = false;
+
   return targetTodo;
 };
 
-// Delete me
-// export const formatDateYmd = function (dateObject) {
-//   if (!dateObject) return;
+function compareDatesAsc(todoCurr, todoNext) {
+  if (!todoCurr.get("dueDate")) return -1;
 
-//   const year = dateObject.getFullYear();
-//   const month = ("0" + (dateObject.getMonth() + 1)).slice(-2); // month is zero-indexed, also pad zero
-//   const day = ("0" + dateObject.getDate()).slice(-2);
+  if (todoCurr.get("dueDate") < todoNext.get("dueDate")) {
+    return -1;
+  }
+  if (todoCurr.get("dueDate") > todoNext.get("dueDate")) {
+    return 1;
+  }
+  return 0;
+}
 
-//   return [year, month, day].join("-");
-// };
+export const sortProjectTodosByDateAsc = function () {
+  const { lastUnsortedProjectId } = localData.config;
+  const targetProject = findProject("id", lastUnsortedProjectId);
 
-// export const formatDateMdy = function (dateObject) {
-//   if (!dateObject) return;
+  if (targetProject.sorted === false) {
+    targetProject.todos.sort(compareDatesAsc);
+  }
 
-//   const month = ("0" + (dateObject.getMonth() + 1)).slice(-2); // month is zero-indexed, also pad zero
-//   const day = ("0" + dateObject.getDate()).slice(-2);
-//   const year = dateObject.getFullYear();
-
-//   return [month, day, year].join("-");
-// };
+  targetProject.sorted = true;
+};

@@ -2,7 +2,13 @@ import "./global.css";
 import "./style.css";
 import { saveLocalData, loadLocalData, hasStorage } from "./readWrite";
 import { openModal, updateDropdown, saveTodo, closeModal } from "./modal";
-import { createProject, findProject, findTodo, deleteTodo } from "./utilities";
+import {
+  createProject,
+  findProject,
+  findTodo,
+  deleteTodo,
+  sortProjectTodosByDateAsc,
+} from "./utilities";
 import { filterTodos } from "./filters";
 import {
   populateNavTimeframes,
@@ -367,6 +373,7 @@ broker.subscribe("nav open", closeModal);
 
 broker.subscribe("save todo", saveTodo);
 broker.subscribe("save todo", closeModal);
+broker.subscribe("save todo", sortProjectTodosByDateAsc);
 broker.subscribe("save todo", saveLocalData);
 
 broker.subscribe("delete todo", deleteTodo);
