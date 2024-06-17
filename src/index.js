@@ -200,6 +200,18 @@ const createTodoBodyExpanded = function (todoId) {
   divExpanded.appendChild(priorityLabel);
   divExpanded.appendChild(priorityBody);
 
+  // Notes div
+  const divNotes = document.createElement("div");
+  divNotes.classList.add("todo-card__notes");
+  divNotes.textContent = "Notes go here";
+  divExpanded.appendChild(divNotes);
+
+  // Checklist items div
+  const divChecklistItems = document.createElement("div");
+  divChecklistItems.classList.add("todo-card__checklist-items");
+  divChecklistItems.textContent = "Checklist items go here";
+  divExpanded.appendChild(divChecklistItems);
+
   const divExtraTodoButtons = createDivExtraButtons(todoId);
   divExpanded.appendChild(divExtraTodoButtons);
   return divExpanded;
@@ -259,24 +271,8 @@ const createDivExtraButtons = function (todoId) {
     publisher.publish("delete todo", todoId);
   });
 
-  const button3 = document.createElement("button");
-  button3.classList.add(
-    "todo-card__extra-button",
-    "todo-card__extra-button--add-note",
-  );
-  button3.textContent = "+ Note";
-
-  const button4 = document.createElement("button");
-  button4.classList.add(
-    "todo-card__extra-button",
-    "todo-card__extra-button--add-checklist-item",
-  );
-  button4.textContent = "+ Checklist Item";
-
   divTodoButtons.appendChild(button1);
   divTodoButtons.appendChild(button2);
-  divTodoButtons.appendChild(button3);
-  divTodoButtons.appendChild(button4);
   return divTodoButtons;
 };
 

@@ -114,7 +114,7 @@ header {
 .nav__list {
   display: grid;
   grid-auto-flow: row;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   grid-template-columns: minmax(100px, 250px);
   justify-content: center;
   text-decoration: none;
@@ -488,6 +488,8 @@ option[data-action="create-project"] {
     "due-date-label      due-date-date"
     "description-label   description-body"
     "priority-label      priority-body"
+    "notes               notes"
+    "checklist-items     checklist-items"
     "extra-buttons       extra-buttons";
   grid-template-columns: auto 1fr;
   gap: var(--space-md);
@@ -539,11 +541,20 @@ option[data-action="create-project"] {
   color: var(--color-darkgray);
 }
 
+.todo-card__notes {
+  grid-area: notes;
+}
+
+.todo-card__checklist-items {
+  grid-area: checklist-items;
+}
+
 .todo-card__extra-buttons {
   grid-area: extra-buttons;
   display: grid;
   grid-auto-flow: column;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
+  justify-content: center;
 }
 
 .todo-card__extra-button {
@@ -553,6 +564,7 @@ option[data-action="create-project"] {
   padding: 0.375em 1em;
   color: white;
   cursor: pointer;
+  /* width: 25%; */
 }
 
 .todo-card__extra-button:hover {
@@ -618,9 +630,9 @@ option[data-action="create-project"] {
   }
 
   .nav {
-    position: static;
+    position: relative;
     display: block;
-    padding: 0;
+    padding: var(--space-md) 0 0 0;
     margin: 0;
     width: 100%;
     border: 0;
@@ -631,7 +643,14 @@ option[data-action="create-project"] {
   .nav__title {
     font-size: var(--text-xl);
     font-weight: 500;
-    padding: 0 0 0 var(--space-md);
+    padding: var(--space-md) 0 var(--space-md) var(--space-md);
+    margin: 0;
+    line-height: 0;
+  }
+
+  .nav__title--project {
+    border-top: 1px solid var(--color-lightgray);
+    padding-top: var(--space-xl);
   }
 
   .nav__list {
@@ -639,12 +658,25 @@ option[data-action="create-project"] {
     grid-template-columns: 1fr;
   }
 
+  .nav__list--secondary {
+    padding-bottom: 4em;
+  }
+
   .nav__item {
     padding: 0 0 0 var(--space-xl);
+    /* padding: 0; */
   }
 
   .nav__link-timeframe {
     background-color: revert;
+  }
+
+  .nav__link-settings {
+    position: absolute;
+    bottom: 0;
+
+    padding: var(--space-sm) 0;
+    text-align: center;
   }
 
   .grid-container {
