@@ -11,27 +11,27 @@ import { format } from "date-fns";
 
 const resetForm = function () {
   document.querySelector(".modal__title").textContent = "New Todo";
-  document.querySelector(".modal__title-input").value = "";
-  document.querySelector(".modal__description-input").value = "";
-  document.querySelector(".modal__date-input").value = "";
-  document.querySelector(".modal__create-project-input").value = "";
-  document.querySelector(".modal__priority-select").selectedIndex = 1;
+  document.querySelector(".form__todo-title-input").value = "";
+  document.querySelector(".form__todo-description-input").value = "";
+  document.querySelector(".form__date-input").value = "";
+  document.querySelector(".form__create-project-input").value = "";
+  document.querySelector(".form__priority-select").selectedIndex = 1;
 
-  const hiddenInput = document.querySelector(".modal__hidden-input");
+  const hiddenInput = document.querySelector(".form__hidden-input");
   hiddenInput.dataset.action = "create";
   hiddenInput.dataset.projectId = "";
   hiddenInput.dataset.todoId = "";
 
-  const inputRequired = document.querySelector(".modal__create-project-input");
+  const inputRequired = document.querySelector(".form__create-project-input");
   inputRequired.required = false;
 
   // Reset dropdown/create new
-  const dropdown = document.querySelector(".modal__projects-select");
+  const dropdown = document.querySelector(".form__projects-select");
 
   const projIndex = 0;
 
   dropdown.selectedIndex = projIndex;
-  document.querySelector(".modal__create-project-container").style.display =
+  document.querySelector(".form__create-project-container").style.display =
     "none";
   dropdown.disabled = false;
 };
@@ -44,7 +44,7 @@ export const openModal = function (todoId) {
     const projIndex = localData.projects.findIndex(
       (proj) => proj.id === project.id,
     );
-    const dropdownProjects = document.querySelector(".modal__projects-select");
+    const dropdownProjects = document.querySelector(".form__projects-select");
     dropdownProjects.selectedIndex = projIndex;
   }
 
@@ -70,7 +70,7 @@ export const closeModal = function () {
 buttonCloseModal.addEventListener("click", closeModal);
 
 export const updateDropdown = function () {
-  const dropdown = document.querySelector(".modal__projects-select");
+  const dropdown = document.querySelector(".form__projects-select");
   dropdown.innerHTML = "";
 
   localData.projects.forEach((project) => {
@@ -90,9 +90,9 @@ export const updateDropdown = function () {
 const displayCreateProjectField = () => {
   const selection = getDropdownSelection(dropdown);
   const createProjectContainer = document.querySelector(
-    ".modal__create-project-container",
+    ".form__create-project-container",
   );
-  const inputRequired = document.querySelector(".modal__create-project-input");
+  const inputRequired = document.querySelector(".form__create-project-input");
 
   if (selection.dataset.action === "create-project") {
     createProjectContainer.style.display = "initial";
@@ -103,7 +103,7 @@ const displayCreateProjectField = () => {
   }
 };
 
-const dropdown = document.querySelector(".modal__projects-select");
+const dropdown = document.querySelector(".form__projects-select");
 dropdown.addEventListener("click", displayCreateProjectField);
 
 const isInputValid = function (inputElem) {
@@ -114,25 +114,25 @@ const isInputValid = function (inputElem) {
 };
 
 export const saveTodo = function () {
-  const projectsDropdown = document.querySelector(".modal__projects-select");
+  const projectsDropdown = document.querySelector(".form__projects-select");
   const selectedProject = getDropdownSelection(projectsDropdown);
-  const todoTitle = document.querySelector(".modal__title-input").value;
+  const todoTitle = document.querySelector(".form__todo-title-input").value;
   const todoDescription = document.querySelector(
-    ".modal__description-input",
+    ".form__todo-description-input",
   ).value;
-  const dueDate = document.querySelector(".modal__date-input").value;
+  const dueDate = document.querySelector(".form__date-input").value;
 
-  const priorityDropdown = document.querySelector(".modal__priority-select");
+  const priorityDropdown = document.querySelector(".form__priority-select");
   const selectedPriority = getDropdownSelection(priorityDropdown);
 
-  const dataAction = document.querySelector(".modal__hidden-input").dataset
+  const dataAction = document.querySelector(".form__hidden-input").dataset
     .action;
-  const dataProjectId = document.querySelector(".modal__hidden-input").dataset
+  const dataProjectId = document.querySelector(".form__hidden-input").dataset
     .projectId;
-  const dataTodoId = document.querySelector(".modal__hidden-input").dataset
+  const dataTodoId = document.querySelector(".form__hidden-input").dataset
     .todoId;
   const createProjectInput = document.querySelector(
-    ".modal__create-project-input",
+    ".form__create-project-input",
   );
 
   if (!todoTitle == "" && isInputValid(createProjectInput)) {
@@ -161,24 +161,26 @@ const editExistingTodo = function (todoId) {
   const todo = findTodo("id", todoId);
   const project = findProject("id", todo.get("projectId"));
   const modalTitle = document.querySelector(".modal__title");
-  modalTitle.textContent = "Update Todo";
-  const inputTitle = document.querySelector(".modal__title-input");
+  modalTitle.textContent = "Edit Todo";
+  const inputTitle = document.querySelector(".form__todo-title-input");
   inputTitle.value = todo.get("title");
-  const inputDescription = document.querySelector(".modal__description-input");
+  const inputDescription = document.querySelector(
+    ".form__todo-description-input",
+  );
   inputDescription.value = todo.get("description");
-  const dropdownProjects = document.querySelector(".modal__projects-select");
+  const dropdownProjects = document.querySelector(".form__projects-select");
   const projIndex = localData.projects.findIndex(
     (proj) => proj.id === project.id,
   );
   dropdownProjects.selectedIndex = projIndex;
   dropdownProjects.disabled = true;
 
-  const dropdownPriority = document.querySelector(".modal__priority-select");
+  const dropdownPriority = document.querySelector(".form__priority-select");
   const priority = todo.get("priority");
   dropdownPriority.selectedIndex =
     priority === "high" ? 0 : priority === "medium" ? 1 : 2;
 
-  const dateInput = document.querySelector(".modal__date-input");
+  const dateInput = document.querySelector(".form__date-input");
   const todoDueDate = todo.get("dueDate");
   if (todoDueDate) {
     dateInput.value = format(todoDueDate, "yyyy-MM-dd");
@@ -186,7 +188,7 @@ const editExistingTodo = function (todoId) {
     // dateInput.value = formatDateYmd(todoDueDate);
   }
 
-  const hiddenInput = document.querySelector(".modal__hidden-input");
+  const hiddenInput = document.querySelector(".form__hidden-input");
   hiddenInput.dataset.action = "update";
   hiddenInput.dataset.projectId = project.id;
   hiddenInput.dataset.todoId = todo.get("id");

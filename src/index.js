@@ -136,8 +136,14 @@ const createTodoBodySimple = function (todoId) {
   const targetTodo = findTodo("id", todoId);
   const targetProject = findProject("id", targetTodo.get("projectId"));
   const divSimple = document.createElement("div");
+  divSimple.dataset.todoId = todoId;
   divSimple.id = `todo-card__body-simple--todo-id-${todoId}`;
   divSimple.classList.add("todo-card__body-simple");
+
+  divSimple.addEventListener("click", function () {
+    toggleExpandedSection.apply(divSimple);
+  });
+
   divSimple.textContent = targetProject.name;
   divSimple.classList.add("show");
   return divSimple;

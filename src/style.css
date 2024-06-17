@@ -210,19 +210,19 @@ header {
   inset: 0;
   opacity: 0;
 }
+
 .modal {
   background-color: var(--color-eggshell);
-  display: grid;
-  gap: 1em;
-  width: fit-content;
+  width: min(90%, 450px);
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, 0%);
   pointer-events: none;
   opacity: 0;
-  padding: 2em;
+  padding: var(--space-lg);
   border: 1px solid var(--color-gray);
+  border-radius: var(--border-radius);
 
   transition:
     transform 175ms ease-out,
@@ -236,16 +236,96 @@ header {
   z-index: 2;
 }
 
-.backdrop.show {
-  opacity: 0.3;
+.modal__title,
+.modal__span-required {
+  padding: 0;
+  line-height: 0;
 }
 
-.modal__create-project-container {
+.modal__title {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  padding-block: 0.5em;
+}
+
+.form {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+span[aria-label="required"] {
+  color: red;
+}
+
+.form__group {
+  display: grid;
+  gap: var(--space-xxs);
+  grid-template-columns: minmax(100px, 1fr);
+}
+
+.form__label {
+  font-weight: 500;
+  color: var(--color-darkgray);
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-size: var(--text-md);
+}
+
+.form__input {
+  color: var(--color-charcoal);
+  border: 1px solid var(--color-gray);
+  border-radius: 5px;
+  padding: var(--space-xxs) var(--space-sm);
+}
+
+.form__input:focus {
+  outline: 2px solid lime;
+}
+
+.form__input::placeholder {
+  color: var(--color-gray);
+}
+
+.form__buttons {
+  text-align: right;
+}
+
+.form__button {
+  font-weight: 600;
+  border: 0;
+  border-radius: 3px;
+  padding: 0.375em 1em;
+  color: white;
+  cursor: pointer;
+}
+
+.form__button:focus,
+.form__button:hover {
+  opacity: 0.8;
+}
+
+.form__button--save {
+  background: #60a5fa;
+  margin-right: var(--space-xs);
+}
+
+.form__button--cancel {
+  background: var(--color-gray);
+}
+
+.form__button--cancel {
+}
+
+.backdrop.show {
+  background-color: var(--color-charcoal);
+  opacity: 0.35;
+  z-index: 2;
+}
+
+.form__create-project-container {
   display: none;
 }
 
 option[data-action="create-project"] {
-  font-weight: 900;
+  font-weight: 600;
 }
 
 .main {
@@ -270,7 +350,7 @@ option[data-action="create-project"] {
   grid-auto-flow: column;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-sm);
+  padding: var(--space-sm) var(--space-sm) var(--space-lg);
 }
 
 .button-new-todo {
@@ -569,5 +649,19 @@ option[data-action="create-project"] {
 
   .grid-container {
     grid-template-columns: 33% 67%;
+  }
+}
+
+@media (any-pointer: coarse) {
+  input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
+  }
+
+  .button-expanded-section {
+    background-color: var(--color-gray);
+    width: 50px;
+    height: 50px;
+    opacity: 0.75;
   }
 }

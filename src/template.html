@@ -44,7 +44,8 @@
           <div class="main__todos-head">
             <div class="main__title">
               <span class="main__view-title-label">View: </span>
-              <div class="main__view-title-icon"></div><span class="main__view-title-value">All</span>
+              <div class="main__view-title-icon"></div>
+              <span class="main__view-title-value">All</span>
             </div>
             <button class="button-new-todo" type="button">&nbsp;New</button>
           </div>
@@ -53,60 +54,76 @@
         </div>
 
         <div class="modal">
-          <form onsubmit="return false;">
+          <form onsubmit="return false;" class="form">
             <h2 class="modal__title">New Todo</h2>
 
-            <p>
-              <label for="title"
+            <p class="modal__span-required">
+              Required fields are followed by
+              <span aria-label="required">*</span>.
+            </p>
+
+            <p class="form__group">
+              <label for="title" class="form__label"
                 >Title: <span aria-label="required">*</span></label
               >
               <input
                 id="title"
                 type="text"
                 name="title"
-                class="modal__title-input"
+                class="form__input form__todo-title-input"
+                placeholder="(example) Water plants"
                 required
               />
             </p>
 
-            <p>
-              <label for="description">Description: </label>
+            <p class="form__group">
+              <label for="description" class="form__label">Description: </label>
               <input
                 id="description"
                 type="text"
                 name="description"
-                class="modal__description-input"
+                class="form__input form__todo-description-input"
+                placeholder="(example) Use water soluble plant food"
               />
             </p>
 
-            <p>
-              <label for="project"
+            <p class="form__group">
+              <label for="projects-select" class="form__label"
                 >Project: <span aria-label="required">*</span></label
               >
               <select
-                class="modal__projects-select"
-                name="modal__projects-select"
+                id="projects-select"
+                class="form__input form__projects-select"
+                name="form__projects-select"
               ></select>
             </p>
 
-            <p class="modal__create-project-container">
-              <label for="modal__create-project-label"
+            <p class="form__create-project-container form__group">
+              <label for="form__create-project-label" class="form__label"
                 >New Project Name: <span aria-label="required">*</span></label
               >
-              <input type="text" class="modal__create-project-input" />
+              <input
+                type="text"
+                class="form__input form__create-project-input"
+                placeholder="(example) Plant Care"
+              />
             </p>
 
-            <p class="modal__date">
-              <label>Due Date: </label>
-              <input type="date" class="modal__date-input" />
+            <p class="form__date form__group">
+              <label for="due-date" class="form__label">Due Date: </label>
+              <input
+                id="due-date"
+                type="date"
+                class="form__input form__date-input"
+              />
             </p>
 
-            <p>
-              <label for="priority">Priority: </label>
+            <p class="form__group">
+              <label for="priority" class="form__label">Priority: </label>
               <select
                 id="priority"
                 name="priority"
-                class="modal__priority-select"
+                class="form__input form__priority-select"
               >
                 <option value="high">High</option>
                 <option value="medium" selected>Medium</option>
@@ -114,22 +131,28 @@
               </select>
             </p>
 
-            <p>
-              Required fields are followed by
-              <span aria-label="required">*</span>.
-            </p>
-
             <input
               type="hidden"
-              class="modal__hidden-input"
+              class="form__hidden-input"
               data-action="create"
               data-project-id=""
               data-todo-id=""
             />
 
-            <p>
-              <button type="submit" value="save" class="button-save-todo" />Save</button>
-              <button type="button" class="button-close-modal">Cancel</button>
+            <p class="form__buttons">
+              <button
+                type="submit"
+                value="save"
+                class="form__button form__button--save button-save-todo"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                class="form__button form__button--cancel button-close-modal"
+              >
+                Cancel
+              </button>
             </p>
           </form>
         </div>
