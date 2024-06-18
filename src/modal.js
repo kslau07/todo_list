@@ -60,6 +60,9 @@ export const openModal = function (todoId) {
 
 const buttonCloseModal = document.querySelector(".button-close-modal");
 export const closeModal = function () {
+  const inputTodoTitle = document.querySelector(".form__todo-title-input");
+  if (inputTodoTitle.value === "") return;
+
   const modal = document.querySelector(".modal");
   const backdrop = document.querySelector(".backdrop");
   modal.classList.remove("show");
