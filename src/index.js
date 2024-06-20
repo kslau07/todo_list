@@ -164,7 +164,8 @@ const createTodoBodyExpanded = function (todoId) {
 
   // Project
   const projLabel = document.createElement("div");
-  projLabel.classList.add("todo-card__project-label");
+  projLabel.classList.add("todo-card__label");
+  // projLabel.classList.add("todo-card__project-label");
   projLabel.textContent = "Project: ";
   const projName = document.createElement("div");
   projName.classList.add("todo-card__project-name");
@@ -178,7 +179,7 @@ const createTodoBodyExpanded = function (todoId) {
     dueDate = format(targetTodo.get("dueDate"), "MM-dd-yyyy");
   }
   const dueDateLabel = document.createElement("div");
-  dueDateLabel.classList.add("todo-card__due-date-label");
+  dueDateLabel.classList.add("todo-card__label");
   dueDateLabel.textContent = "Due date: ";
   const dueDateDate = document.createElement("div");
   dueDateDate.classList.add("todo-card__due-date-date");
@@ -188,7 +189,7 @@ const createTodoBodyExpanded = function (todoId) {
 
   // Description
   const descLabel = document.createElement("div");
-  descLabel.classList.add("todo-card__description-label");
+  descLabel.classList.add("todo-card__label");
   descLabel.textContent = "Description: ";
   const descBody = document.createElement("div");
   descBody.classList.add("todo-card__description-body");
@@ -198,7 +199,7 @@ const createTodoBodyExpanded = function (todoId) {
 
   // Priority
   const priorityLabel = document.createElement("div");
-  priorityLabel.classList.add("todo-card__priority-label");
+  priorityLabel.classList.add("todo-card__label");
   priorityLabel.textContent = "Priority: ";
   const priorityBody = document.createElement("div");
   priorityBody.classList.add("todo-card__priority-body");
@@ -207,20 +208,69 @@ const createTodoBodyExpanded = function (todoId) {
   divExpanded.appendChild(priorityBody);
 
   // Notes div
-  const divNotes = document.createElement("div");
-  divNotes.classList.add("todo-card__notes");
-  divNotes.textContent = "Notes go here";
-  divExpanded.appendChild(divNotes);
+  // TODO: Extract "notes" code below to function
+  const notesLabel = document.createElement("div");
+  notesLabel.classList.add("todo-card__label", "todo-card__label-notes");
+  notesLabel.textContent = "Notes:";
+  const notesBody = document.createElement("div");
+  notesBody.classList.add("todo-card__notes-body");
+  const buttonNewNote = document.createElement("button");
+  notesBody.appendChild(buttonNewNote);
+  buttonNewNote.classList.add("todo-card__button-new-note");
+  buttonNewNote.textContent = "+";
+  buttonNewNote.addEventListener("click", () => {
+    if (buttonNewNote.textContent === "+") {
+      buttonNewNote.textContent = "✔";
+      const inputNewNote = document.createElement("input");
+      inputNewNote.type = "input";
+      inputNewNote.classList.add("todo-card__input-note");
+      notesBody.prepend(inputNewNote);
+      inputNewNote.focus();
+    } else if (buttonNewNote.textContent === "✔") {
+      const children = notesBody.childNodes;
+      const inputNewNote = children[0];
+      const replacementNewNote = document.createElement("div");
+      replacementNewNote.value = "foo";
+      replacementNewNote.textContent = inputNewNote.value;
+      replacementNewNote.classList.add("todo-card__note");
+      notesBody.replaceChild(replacementNewNote, inputNewNote);
+      buttonNewNote.textContent = "+";
+    }
+  });
+
+  divExpanded.appendChild(notesLabel);
+  divExpanded.appendChild(notesBody);
 
   // Checklist items div
-  const divChecklistItems = document.createElement("div");
-  divChecklistItems.classList.add("todo-card__checklist-items");
-  divChecklistItems.textContent = "Checklist items go here";
-  divExpanded.appendChild(divChecklistItems);
+  // const divChecklistItems = document.createElement("div");
+  // divChecklistItems.classList.add("todo-card__checklist-items");
+  // divChecklistItems.textContent = "Checklist items go here";
+  // divExpanded.appendChild(divChecklistItems);
 
   const divExtraTodoButtons = createDivExtraButtons(todoId);
   divExpanded.appendChild(divExtraTodoButtons);
   return divExpanded;
+};
+
+const createTodoCardNotes = function () {
+  const divNotes = document.createElement("div");
+  divNotes.classList.add("todo-card__notes");
+
+  const divNotesTitle = document.createElement("h3");
+  divNotesTitle.textContent = "Notes:";
+  divNotes.appendChild(divNotesTitle);
+
+  // const buttonNewNote = document.createElement("button");
+  // buttonNewNote.textContent = "+ note";
+  // buttonNewNote.addEventListener("click", () => {
+  // const inputNewNote = document.createElement("input");
+  // inputNewNote.type = "text";
+  // divNotes.appendChild(inputNewNote);
+  // inputNewNote.focus();
+  // });
+  // divNotes.appendChild(buttonNewNote);
+
+  return divNotes;
 };
 
 const toggleExpandedSection = function () {
