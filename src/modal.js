@@ -59,9 +59,9 @@ export const openModal = function (todoId) {
 };
 
 const buttonCloseModal = document.querySelector(".button-close-modal");
-export const closeModal = function () {
+export const closeModal = function (cancelClicked = false) {
   const inputTodoTitle = document.querySelector(".form__todo-title-input");
-  if (inputTodoTitle.value === "") return;
+  if (inputTodoTitle.value === "" && cancelClicked === false) return;
 
   const modal = document.querySelector(".modal");
   const backdrop = document.querySelector(".backdrop");
@@ -70,7 +70,13 @@ export const closeModal = function () {
 
   setTimeout(resetForm, 300);
 };
-buttonCloseModal.addEventListener("click", closeModal);
+buttonCloseModal.addEventListener("click", () => {
+  closeModal(true);
+});
+const buttonCloseModalX = document.querySelector(".modal__button-close");
+buttonCloseModalX.addEventListener("click", () => {
+  closeModal(true);
+});
 
 export const updateDropdown = function () {
   const dropdown = document.querySelector(".form__projects-select");

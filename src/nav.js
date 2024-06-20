@@ -18,7 +18,7 @@ export const navClose = function () {
   nav.classList.remove("open");
 };
 
-const navCloseButton = document.querySelector(".nav__close-button");
+const navCloseButton = document.querySelector(".nav__button-close");
 navCloseButton.addEventListener("click", navClose);
 
 export const populateNavTimeframes = function () {
