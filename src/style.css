@@ -29,6 +29,7 @@ header {
 .logo-word-todo {
   color: var(--color-accent1);
 }
+
 .logo-word-list {
   position: relative;
   color: var(--color-darkgray);
@@ -160,7 +161,6 @@ header {
   width: min(250px, 100%);
   padding: var(--space-md) 0;
   border-top: 1px solid var(--color-lightgray);
-
   text-decoration: none;
   color: var(--color-darkgray);
 }
@@ -174,6 +174,7 @@ header {
   border: 0;
   background: none;
 }
+
 .nav__button-close:focus,
 .nav__button-close:hover {
   opacity: 0.65;
@@ -194,6 +195,7 @@ header {
 .nav__button-close::before {
   transform: rotate(45deg);
 }
+
 .nav__button-close::after {
   transform: rotate(-45deg);
 }
@@ -252,6 +254,7 @@ header {
 .modal__button-close::before {
   transform: rotate(45deg);
 }
+
 .modal__button-close::after {
   transform: rotate(-45deg);
 }
@@ -367,7 +370,6 @@ option[data-action="create-project"] {
 }
 
 .main__todos-container {
-  /* border: 3px solid lime; */
   grid-area: main;
   background-color: var(--color-porcelain);
 }
@@ -520,7 +522,6 @@ option[data-action="create-project"] {
     "extra-buttons       extra-buttons";
   grid-template-columns: auto 1fr;
   gap: var(--space-md);
-  /* margin: var(--space-xxs) 0 0 0; */
   margin: 0;
   padding: var(--space-sm) 0 0 0;
   border-top: 1px solid var(--color-gray);
@@ -531,24 +532,31 @@ option[data-action="create-project"] {
 .todo-card__project-label {
   grid-area: project-label;
 }
+
 .todo-card__project-name {
   grid-area: project-name;
 }
+
 .todo-card__due-date-label {
   grid-area: due-date-label;
 }
+
 .todo-card__due-date-date {
   grid-area: due-date-date;
 }
+
 .todo-card__description-label {
   grid-area: description-label;
 }
+
 .todo-card__description-body {
   grid-area: description-body;
 }
+
 .todo-card__priority-label {
   grid-area: priority-label;
 }
+
 .todo-card__priority-body {
   grid-area: priority-body;
 }
@@ -597,11 +605,13 @@ option[data-action="create-project"] {
   padding: 3px;
   border-radius: var(--border-radius);
 }
+
 .todo-card__input-note {
   padding: var(--space-xs);
   border: 1px solid var(--color-gray);
   border-radius: var(--border-radius);
 }
+
 .todo-card__input-note:focus {
   outline: 2px solid lime;
 }
@@ -626,7 +636,6 @@ option[data-action="create-project"] {
   padding: 0.375em 1em;
   color: white;
   cursor: pointer;
-  /* width: 25%; */
 }
 
 .todo-card__extra-button:hover {
@@ -634,7 +643,6 @@ option[data-action="create-project"] {
 }
 
 .todo-card__extra-button--edit {
-  /* background-color: #f00; */
   background-color: #60a5fa;
 }
 
@@ -644,7 +652,6 @@ option[data-action="create-project"] {
 
 .todo-card__extra-button--add-note,
 .todo-card__extra-button--add-checklist-item {
-  /* background-color: #f00; */
   background-color: #4ade80;
 }
 
@@ -659,6 +666,7 @@ option[data-action="create-project"] {
   border-radius: 50%;
   border: 0;
   transition: transform 125ms;
+  transform: rotate(-90deg);
 }
 
 .button-expanded-section img {
@@ -680,13 +688,14 @@ option[data-action="create-project"] {
 
 .button-expanded-section.show {
   opacity: 1;
-  transform: rotate(-90deg);
+  transform: rotate(90deg);
 }
 
 @media (min-width: 800px) {
   .button-nav-open {
     display: none;
   }
+
   .nav__button-close {
     display: none;
   }
@@ -726,7 +735,6 @@ option[data-action="create-project"] {
 
   .nav__item {
     padding: 0 0 0 var(--space-xl);
-    /* padding: 0; */
   }
 
   .nav__link-timeframe {
