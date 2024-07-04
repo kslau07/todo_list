@@ -31,11 +31,9 @@
   --color-darkgray: #525252;
   --color-charcoal: #262626;
   --color-black: #0a0a0a;
-
   --color-accent1: #2dd4bf;
   --color-accent1-alt: #1c877a;
   --color-accent2-alt: #871c4e;
-
   --color-green: #5ff75e;
 
   /* Drop shadow */
@@ -59,7 +57,7 @@ body {
   letter-spacing: 0.5px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 img,

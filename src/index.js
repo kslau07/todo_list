@@ -1,6 +1,15 @@
+// TODO: If a function contains methods that should be moved, move those methods first.
+// TODO: We should receive localData in index.js then invoke necessary functions passing in required data. Other modules do not need direct access to localData, only index does.
+
 import './global.css';
 import './style.css';
-import { saveLocalData, loadLocalData, hasStorage } from './modules/readWrite';
+
+// New files used for refactoring
+import { updateViewIconDelegated, populateMainTodos } from './modules/ui';
+import { localData } from './modules/storage';
+// End new files for refactoring
+
+import { saveLocalData, loadLocalData, hasStorage } from './modules/storage';
 import { openModal, updateDropdown, saveTodo, closeModal } from './modules/modal';
 import {
   createProject,
@@ -8,8 +17,8 @@ import {
   findTodo,
   deleteTodo,
   sortProjectTodosByDateAsc,
-} from './modules/utilities';
-import { filterTodos } from './modules/filters';
+} from './modules/storage';
+import { filterTodos } from './modules/storage';
 import {
   populateNavTimeframes,
   populateNavProjects,
@@ -19,85 +28,16 @@ import {
 } from './modules/nav';
 import createBroker from './modules/createBroker';
 import createPublisher from './modules/createPublisher';
-
 export const broker = createBroker();
 export const publisher = createPublisher(broker);
-import { format, formatDistance } from 'date-fns';
+import { format } from 'date-fns';
 
 // Import images
-import All from './assets/all.svg';
-import Calendar from './assets/calendar.svg';
-import Star from './assets/star.svg';
-import Project from './assets/project.svg';
+// import All from './assets/all.svg';
+// import Calendar from './assets/calendar.svg';
+// import Star from './assets/star.svg';
+// import Project from './assets/project.svg';
 import LeftArrow from './assets/left-arrow.svg';
-
-export const localData = {
-  projects: [],
-  config: {
-    projectCounter: 0,
-    todoCounter: 0,
-    lastViewConstraint: 'timeframe',
-    lastViewValue: 'all',
-  },
-};
-
-export const allTodos = function () {
-  const todosArray = [];
-  localData.projects.forEach((project) => {
-    project.todos.forEach((todo) => todosArray.push(todo));
-  });
-  return todosArray;
-};
-
-const populateMainTodos = function () {
-  const { lastViewConstraint, lastViewValue } = localData.config;
-  const filteredTodos = filterTodos(lastViewConstraint, lastViewValue);
-  const todosList = document.querySelector('.main__todos-list');
-  todosList.innerHTML = '';
-
-  if (filteredTodos.length === 0) {
-    todosList.textContent = 'No todos to show.';
-  }
-
-  filteredTodos.forEach((todo) => {
-    const todoId = todo.get('id');
-    const projectId = todo.get('projectId');
-    const todoCard = document.createElement('div');
-    todoCard.classList.add('todo-card');
-    todoCard.id = `todo-card--todo-id-${todo.get('id')}`;
-
-    const todoCheckbox = createTodoCheckbox(todo, todoCard);
-
-    const divTodoTitle = document.createElement('div');
-    const spanTodoTitle = document.createElement('span');
-    spanTodoTitle.classList.add('todo-card__title');
-    spanTodoTitle.textContent = todo.get('title');
-    spanTodoTitle.dataset.projectId = projectId;
-    spanTodoTitle.dataset.todoId = todoId;
-    spanTodoTitle.addEventListener('click', function () {
-      toggleExpandedSection.apply(spanTodoTitle);
-    });
-    divTodoTitle.appendChild(spanTodoTitle);
-
-    if (todo.get('priority') === 'high') {
-      const spanPriorityHigh = document.createElement('span');
-      spanPriorityHigh.classList.add('todo-card__priority-flag');
-      spanPriorityHigh.textContent = ' ⚑';
-      divTodoTitle.appendChild(spanPriorityHigh);
-    }
-
-    const buttonExpand = createButtonExpandedSection(todoId);
-    buttonExpand.dataset.projectId = projectId;
-
-    const todoBody = createTodoBody(todoId);
-
-    todoCard.appendChild(todoCheckbox);
-    todoCard.appendChild(divTodoTitle);
-    todoCard.appendChild(buttonExpand);
-    todoCard.appendChild(todoBody);
-    todosList.appendChild(todoCard);
-  });
-};
 
 const createTodoCheckbox = function (todo, todoCard) {
   const todoCheckbox = document.createElement('input');
@@ -255,38 +195,36 @@ const createTodoBodyExpanded = function (todoId) {
   return divExpanded;
 };
 
-const createTodoCardNotes = function () {
-  const divNotes = document.createElement('div');
-  divNotes.classList.add('todo-card__notes');
+// const createTodoCardNotes = function () {
+//   const divNotes = document.createElement('div');
+//   divNotes.classList.add('todo-card__notes');
 
-  const divNotesTitle = document.createElement('h3');
-  divNotesTitle.textContent = 'Notes:';
-  divNotes.appendChild(divNotesTitle);
+//   const divNotesTitle = document.createElement('h3');
+//   divNotesTitle.textContent = 'Notes:';
+//   divNotes.appendChild(divNotesTitle);
 
-  // const buttonNewNote = document.createElement("button");
-  // buttonNewNote.textContent = "+ note";
-  // buttonNewNote.addEventListener("click", () => {
-  // const inputNewNote = document.createElement("input");
-  // inputNewNote.type = "text";
-  // divNotes.appendChild(inputNewNote);
-  // inputNewNote.focus();
-  // });
-  // divNotes.appendChild(buttonNewNote);
+//   // const buttonNewNote = document.createElement("button");
+//   // buttonNewNote.textContent = "+ note";
+//   // buttonNewNote.addEventListener("click", () => {
+//   // const inputNewNote = document.createElement("input");
+//   // inputNewNote.type = "text";
+//   // divNotes.appendChild(inputNewNote);
+//   // inputNewNote.focus();
+//   // });
+//   // divNotes.appendChild(buttonNewNote);
 
-  return divNotes;
-};
+//   return divNotes;
+// };
 
 const toggleExpandedSection = function () {
   const buttonExpand = document.querySelector(
     `#button-expanded-section--todo-id-${this.dataset.todoId}`
   );
   buttonExpand.classList.toggle('show');
-
   const divTodoBodySimple = document.querySelector(
     `#todo-card__body-simple--todo-id-${this.dataset.todoId}`
   );
   divTodoBodySimple.classList.toggle('show');
-
   const divTodoBodyExpanded = document.querySelector(
     `#todo-card__body-expanded--todo-id-${this.dataset.todoId}`
   );
@@ -304,7 +242,6 @@ const createButtonExpandedSection = function (todoId) {
   leftArrow.src = LeftArrow;
   leftArrow.alt = 'A left arrow that expands this todo';
   button.appendChild(leftArrow);
-
   return button;
 };
 
@@ -314,9 +251,11 @@ const createDivExtraButtons = function (todoId) {
   const button1 = document.createElement('button');
   button1.classList.add('todo-card__extra-button', 'todo-card__extra-button--edit');
   button1.textContent = '🖉 Edit';
+
   button1.addEventListener('click', function () {
     publisher.publish('open modal', todoId);
   });
+
   const button2 = document.createElement('button');
   button2.classList.add('todo-card__extra-button', 'todo-card__extra-button--delete');
   button2.textContent = '🗑 Delete';
@@ -335,7 +274,7 @@ export const updateMainViewTitle = function () {
   const mainViewValue = document.querySelector('.main__view-title-value');
   mainViewValue.textContent = lastViewValue;
 
-  if (lastViewConstraint == 'timeframe') {
+  if (lastViewConstraint === 'timeframe') {
     mainViewType.textContent = 'View: ';
     mainViewValue.classList.add('main__view-title-by-timeframe');
     mainViewValue.classList.remove('main__view-title-by-project');
@@ -348,37 +287,40 @@ export const updateMainViewTitle = function () {
   updateViewIcon();
 };
 
-const updateViewIcon = function () {
-  const { lastViewConstraint, lastViewValue } = localData.config;
-  const viewTitleIcon = document.querySelector('.main__view-title-icon');
-  viewTitleIcon.textContent = '';
+const updateViewIcon = updateViewIconDelegated;
 
-  let icon;
+// NOTE: DELETE ME
+// const updateViewIcon = function () {
+//   const { lastViewValue } = localData.config;
+//   const viewTitleIcon = document.querySelector('.main__view-title-icon');
+//   viewTitleIcon.textContent = '';
 
-  switch (lastViewValue) {
-    case 'all':
-      icon = new Image();
-      icon.src = All;
-      icon.alt = 'An icon of a series of lines which represents all todos.';
-      break;
-    case 'today':
-      icon = new Image();
-      icon.src = Star;
-      icon.alt = "An icon of a star which represents today's todos.";
-      break;
-    case 'upcoming':
-      icon = new Image();
-      icon.src = Calendar;
-      icon.alt = 'An icon of a calendar which represents upcoming todos.';
-      break;
-    default:
-      icon = new Image();
-      icon.src = Project;
-      icon.alt = 'An icon which represents a project.';
-  }
+//   let icon;
 
-  viewTitleIcon.appendChild(icon);
-};
+//   switch (lastViewValue) {
+//     case 'all':
+//       icon = new Image();
+//       icon.src = All;
+//       icon.alt = '';
+//       break;
+//     case 'today':
+//       icon = new Image();
+//       icon.src = Star;
+//       icon.alt = '';
+//       break;
+//     case 'upcoming':
+//       icon = new Image();
+//       icon.src = Calendar;
+//       icon.alt = '';
+//       break;
+//     default:
+//       icon = new Image();
+//       icon.src = Project;
+//       icon.alt = '';
+//   }
+
+//   viewTitleIcon.appendChild(icon);
+// };
 
 export const refreshUI = function () {
   populateMainTodos();
@@ -398,32 +340,22 @@ const firstLoad = function () {
   if (localData.config.projectCounter === 0) initializeNewData();
 };
 
-document.cookie = 'colortheme=light';
-const cookie = document.cookie;
-// console.log(cookie);
-
 // Subscribe to events
 broker.subscribe('start up', firstLoad);
 broker.subscribe('start up', saveLocalData);
-
 broker.subscribe('open modal', openModal);
 broker.subscribe('open modal', navClose);
-
 broker.subscribe('nav open', navOpen);
 broker.subscribe('nav open', closeModal);
-
 broker.subscribe('save todo', saveTodo);
 broker.subscribe('save todo', closeModal);
 broker.subscribe('save todo', sortProjectTodosByDateAsc);
 broker.subscribe('save todo', saveLocalData);
-
 broker.subscribe('delete todo', deleteTodo);
 broker.subscribe('delete todo', saveLocalData);
-
 broker.subscribe('change view', changeView);
 broker.subscribe('change view', navClose);
 broker.subscribe('change view', saveLocalData);
-
 broker.subscribe('checkbox clicked', checkboxClicked);
 broker.subscribe('checkbox clicked', saveLocalData);
 
