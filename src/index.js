@@ -36,6 +36,8 @@ const firstLoad = function () {
   if (localData.config.projectCounter === 0) initializeNewData();
 };
 
+// Use Pub-sub pattern for events
+
 // Subscribe to events
 broker.subscribe('start up', firstLoad);
 broker.subscribe('start up', saveLocalData);
@@ -56,17 +58,18 @@ broker.subscribe('checkbox clicked', checkboxClicked);
 broker.subscribe('checkbox clicked', saveLocalData);
 
 // Publish events
-document
-  .querySelector('.button-save-todo')
-  .addEventListener('click', () => publisher.publish('save todo'));
 
-document
-  .querySelector('.button-nav-open')
-  .addEventListener('click', () => publisher.publish('nav open'));
+publisher.publish('start up'); // Load page
 
-document.querySelector('.button-new-todo').addEventListener('click', () => {
+// Clicks will publish events
+
+const buttonSaveTodo = document.querySelector('.button-save-todo');
+buttonSaveTodo.addEventListener('click', () => publisher.publish('save todo'));
+
+const buttonNavOpen = document.querySelector('.button-nav-open');
+buttonNavOpen.addEventListener('click', () => publisher.publish('nav open'));
+
+const buttonNewTodo = document.querySelector('.button-new-todo');
+buttonNewTodo.addEventListener('click', () => {
   publisher.publish('open modal');
 });
-
-// Publish initial page load
-publisher.publish('start up');
