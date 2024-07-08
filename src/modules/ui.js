@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import {
   createOrUpdateTodo,
   createProject,
@@ -8,6 +7,7 @@ import {
   getDropdownSelection,
   localData,
 } from './storage';
+import { publisher, format } from '../index';
 
 // Import images
 import All from '../assets/all.svg';
@@ -285,10 +285,8 @@ export const saveTodo = function () {
   const todoTitle = document.querySelector('.form__todo-title-input').value;
   const todoDescription = document.querySelector('.form__todo-description-input').value;
   const dueDate = document.querySelector('.form__date-input').value;
-
   const priorityDropdown = document.querySelector('.form__priority-select');
   const selectedPriority = getDropdownSelection(priorityDropdown);
-
   const dataAction = document.querySelector('.form__hidden-input').dataset.action;
   const dataProjectId = document.querySelector('.form__hidden-input').dataset.projectId;
   const dataTodoId = document.querySelector('.form__hidden-input').dataset.todoId;

@@ -1,8 +1,9 @@
-import { refreshUI } from '../index';
+import { refreshUI } from './ui';
+import { format } from '../index';
 
 // localStorage, CRUD operations
 
-export const localData = {
+const initialLocalData = {
   projects: [],
   config: {
     projectCounter: 0,
@@ -11,6 +12,8 @@ export const localData = {
     lastViewValue: 'all',
   },
 };
+
+export const localData = { ...initialLocalData };
 
 // SOURCE: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
 function storageAvailable(type) {
@@ -81,9 +84,11 @@ export const loadLocalData = function () {
 
   const localDataStr = localStorage.getItem('localData');
   const loadedLocalData = JSON.parse(localDataStr, reviver);
-  localData.projects = loadedLocalData.projects;
-  localData.config = loadedLocalData.config;
+  localData.projects = [...loadedLocalData.projects];
+  localData.config = { ...loadedLocalData.config };
 };
+
+// Filters
 
 export const allTodos = function () {
   const todosArray = [];
@@ -92,8 +97,6 @@ export const allTodos = function () {
   });
   return todosArray;
 };
-
-// Filters
 
 const filterToday = function () {
   const today = format(new Date(), 'yyyy-MM-dd');
@@ -133,13 +136,14 @@ const filterTodosByProject = function (projectName) {
 
 export const filterTodos = function () {
   const { lastViewConstraint, lastViewValue } = localData.config;
-
   let todos;
+
   if (lastViewConstraint === 'timeframe') {
     todos = filterTodosByTimeframe(lastViewValue);
   } else if (lastViewConstraint === 'project') {
     todos = filterTodosByProject(lastViewValue);
   }
+
   return todos;
 };
 
@@ -151,6 +155,7 @@ export const createProject = function (name) {
   const dataType = 'project';
   const id = nextId('project');
   const todos = [];
+  const unsorted = false;
   const newProject = { dataType, id, name, todos };
   localData.projects.push(newProject);
   return newProject;
@@ -191,15 +196,28 @@ export const createOrUpdateTodo = function (dataAttrs, fieldData) {
   let targetTodo;
   const project = findProject('id', fieldData.projectId);
 
+  // Set 'targetTodo' to an existing todo, or a new todo
   if (dataAttrs.action === 'create') {
     targetTodo = createTodo(project);
   } else if (dataAttrs.action === 'update') {
     targetTodo = findTodo('id', dataAttrs.todoId);
   }
 
+  setTodoValues(targetTodo, dataAttrs, fieldData);
+
+  localData.config.lastUnsortedProjectId = project.id; // Project now contains an unsorted todo array
+  project.unsorted = true;
+
+  return targetTodo;
+};
+
+// Take form inputs and set key-value data in the todo object
+const setTodoValues = function (targetTodo, dataAttrs, fieldData) {
   for (const key in fieldData) {
     let value;
-    if (key === 'dueDate' && fieldData[key]) {
+
+    // If user has specified a dueDate, create a date object
+    if (key === 'dueDate' && fieldData[key] !== '') {
       const dateSplit = fieldData[key].split('-');
       const yr = dateSplit[0];
       const month = dateSplit[1];
@@ -209,34 +227,28 @@ export const createOrUpdateTodo = function (dataAttrs, fieldData) {
     } else {
       value = fieldData[key];
     }
+
     targetTodo.set(key, value);
   }
-
-  localData.config.lastUnsortedProjectId = project.id;
-  project.sorted = false;
-
-  return targetTodo;
 };
 
 function compareDatesAsc(todoCurr, todoNext) {
   if (!todoCurr.get('dueDate')) return -1;
 
-  if (todoCurr.get('dueDate') < todoNext.get('dueDate')) {
-    return -1;
-  }
   if (todoCurr.get('dueDate') > todoNext.get('dueDate')) {
     return 1;
+  } else if (todoCurr.get('dueDate') < todoNext.get('dueDate')) {
+    return -1;
   }
+
   return 0;
 }
 
 export const sortProjectTodosByDateAsc = function () {
   const { lastUnsortedProjectId } = localData.config;
   const targetProject = findProject('id', lastUnsortedProjectId);
+  if (targetProject.unsorted === false) return;
 
-  if (targetProject.sorted === false) {
-    targetProject.todos.sort(compareDatesAsc);
-  }
-
-  targetProject.sorted = true;
+  targetProject.todos.sort(compareDatesAsc);
+  targetProject.unsorted = false;
 };
